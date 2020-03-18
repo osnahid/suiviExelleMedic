@@ -1,0 +1,18 @@
+<nb-layout
+[nbSpinner]="loading"
+nbSpinnerStatus="primary"
+nbSpinnerSize="large">
+
+  <nb-layout-header fixed>
+    <app-header></app-header>
+  </nb-layout-header>
+
+  <nb-layout-column>
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+
+  <nb-sidebar tag="left">
+    <nb-menu (click)="expand()" [items]="menu"></nb-menu>
+  </nb-sidebar>
+
+</nb-layout>
