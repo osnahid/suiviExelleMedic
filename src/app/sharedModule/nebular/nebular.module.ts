@@ -33,7 +33,10 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
   ],
   imports: [
     CommonModule,
-    NbToastrModule.forRoot(),
+    NbToastrModule.forRoot({
+      destroyByClick: true,
+      hasIcon: true
+    }),
     NbIconModule,
     NbActionsModule,
     NbUserModule,

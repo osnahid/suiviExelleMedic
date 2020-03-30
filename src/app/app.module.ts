@@ -6,7 +6,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NebularModule } from './sharedModule/nebular/nebular.module';
 import { PagesModule } from './pages/pages.module';
-import { HeaderComponent } from './shared-components/header/header.component';
+import { AuthModule } from './auth/auth.module';
+import { HttpClientModule } from '@angular/common/http';
+import { MaterialAngularModule } from './sharedModule/material-angular/material-angular.module';
 
 @NgModule({
   declarations: [
@@ -15,11 +17,15 @@ import { HeaderComponent } from './shared-components/header/header.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
     NebularModule,
     PagesModule,
-    AppRoutingModule,
+    HttpClientModule,
+    AuthModule,
+    MaterialAngularModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
 })
 export class AppModule { }

@@ -8,6 +8,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true,
   },
   {
+    title: 'Les clients',
+    icon: 'people-outline',
+    link: '/pages/clients'
+  },
+  {
     title: 'Actions',
     icon: 'activity-outline',
     children: [

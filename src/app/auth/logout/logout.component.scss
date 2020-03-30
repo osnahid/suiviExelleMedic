@@ -1,0 +1,28 @@
+#loader{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1200;
+  img{
+      height: 56px;
+      animation: tictec 2.5s ease infinite;
+  }
+}
+
+@keyframes tictec {
+  0%{
+    opacity: 0;
+  }
+  50%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+  }
+}

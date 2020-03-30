@@ -1,0 +1,27 @@
+<nb-card>
+  <nb-card-header class="flex">
+    <h3>Liste des clients</h3>
+    <div>
+      <input nbInput fullWidth (keyup)="applyFilter($event.target.value)" placeholder="Filtre">
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <app-osn-table></app-osn-table>
+</nb-card-body>
+<nb-card-footer>
+
+</nb-card-footer>
+</nb-card>
+
+<!--
+<td mat-cell *matCellDef="let element; let i = index" >
+  <button nbButton outline size="small"
+  nbTooltipIcon="menu" nbTooltipStatus="primary" nbTooltip="afficher les details de ce client"
+  style="padding: 0.375rem; margin: 2px;" status="primary"><nb-icon icon="menu-outline"></nb-icon></button>
+  <button nbButton outline size="small"
+  nbTooltipIcon="edit-2" nbTooltipStatus="info" nbTooltip="modifier ce client"
+  style="padding: 0.375rem; margin: 2px;" status="info"><nb-icon icon="edit-2-outline"></nb-icon></button>
+
+  <button nbButton outline size="small"
+  nbTooltipIcon="trash-2" nbTooltipStatus="danger" (click)="delete(element, i)" nbTooltip="supprimer ce client"
+  style="padding: 0.375rem; margin: 2px;" status="danger"><nb-icon icon="trash-2-outline"></nb-icon></button> -->
