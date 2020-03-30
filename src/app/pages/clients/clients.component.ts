@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from 'src/app/shared-components/confirmation-modal/confirmation-modal.component';
+import { Column } from 'src/app/shared-components/osn-table/column';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
   ) { }
 
   clients: Customer[] = [];
-  columnsClients =  [
+  columnsClients: Column[] =  [
     {column: 'name', name: 'nom', type: 'string'},
     {column: 'type', name: 'type', type: 'string'},
     {column: 'city', name: 'ville', type: 'string'},

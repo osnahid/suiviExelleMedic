@@ -1,12 +1,28 @@
 <table>
   <thead>
     <tr>
-      <th></th>
+      <th>
+        #
+      </th>
+      <th *ngFor="let column of columns">
+        {{ column.name }}
+      </th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td></td>
+    <tr *ngFor="let item of dataShowed; let i=index">
+      <td>
+        {{ i+1 }}
+      </td>
+      <td *ngFor="let column of columns">
+        <ng-container *ngIf="column.type == 'date'; else elseTemplate">
+          {{ item[column.column] | date:"dd/MM/yy" }}
+        </ng-container>
+        <ng-template #elseTemplate>
+          {{ item[column.column] }}
+        </ng-template>
+
+      </td>
     </tr>
   </tbody>
   <tfoot>

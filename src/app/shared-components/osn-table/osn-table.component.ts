@@ -8,7 +8,20 @@ import { Column } from './column';
 })
 export class OsnTableComponent implements OnInit {
 
-  @Input() data: any[];
+  dataShowed: any[];
+  _data: any[];
+  @Input()
+  public set data(dt: any[]) {
+    this.dataShowed = dt.sort((a, b) => {
+      if (a.created_at && b.created_at) {
+        return a.created_at.getTime() - b.created_at.getTime();
+      } else {
+        return 0;
+      }
+    });
+    this._data = dt;
+  }
+
   @Input() columns: Column[];
   @Input() config: any;
 

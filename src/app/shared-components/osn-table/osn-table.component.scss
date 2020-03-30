@@ -1,0 +1,20 @@
+table {
+  width: 100%;
+  border: none;
+  border-collapse: collapse;
+  border-spacing: unset;
+  tbody {
+    border: none;
+  }
+  th{
+    text-transform: capitalize;
+  }
+  td, th{
+    padding: 1.1em;
+    border: none;
+    margin: none;
+  }
+  tr{
+    border-bottom: 0.0625rem solid #101426;
+  }
+}
