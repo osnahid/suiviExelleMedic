@@ -9,6 +9,8 @@ import { OsnTableConfig } from './config';
 })
 export class OsnTableComponent implements OnInit {
 
+  sliceFirst = 1;
+  sliceEnd = 5;
   dataShowed: any[];
   _data: any[];
   @Input()
@@ -50,6 +52,11 @@ export class OsnTableComponent implements OnInit {
       column.sort = 'ascending';
     }
 
+  }
+
+  paginate(event) {
+    this.sliceFirst = event.sliceFirst - 1;
+    this.sliceEnd = event.sliceEnd - 1;
   }
 
 }

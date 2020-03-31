@@ -16,7 +16,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of dataShowed">
+    <tr *ngFor="let item of dataShowed | slice:sliceFirst:sliceEnd">
       <td *ngFor="let column of columns">
         <ng-container *ngIf="column.type == 'date'; else elseTemplate">
           {{ item[column.column] | date:"dd/MM/yy" }}
@@ -33,6 +33,11 @@
     </tr>
   </tbody>
   <tfoot>
-    <app-osn-pagination></app-osn-pagination>
+    <tr>
+      <td [attr.colspan]="columns.length + 1">
+        <app-osn-pagination [total]="dataShowed.length" (slices)="paginate($event)"></app-osn-pagination>
+      </td>
+    </tr>
+
   </tfoot>
 </table>

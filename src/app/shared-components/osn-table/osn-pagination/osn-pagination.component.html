@@ -1,1 +1,25 @@
-<p>osn-pagination works!</p>
+<div class="main">
+  <div class="itemPerPage">
+    <p class="label">
+      elements par page:
+    </p>
+    <nb-select [(selected)]="itemPerPage" (selectedChange)="paginate()">
+      <nb-option value="5">5</nb-option>
+      <nb-option value="10">10</nb-option>
+      <nb-option value="20">20</nb-option>
+    </nb-select>
+  </div>
+  <div>
+    <p class="label">
+      {{ sliceFirst }} à {{ sliceEnd }} sur {{ total }}
+    </p>
+  </div>
+  <div>
+    <button nbButton ghost (click)="paginate(-1)">
+      <nb-icon icon='arrow-ios-back-outline'></nb-icon>
+    </button>
+    <button nbButton ghost (click)="paginate(1)">
+      <nb-icon icon='arrow-ios-forward-outline'></nb-icon>
+    </button>
+  </div>
+</div>
