@@ -16,6 +16,7 @@ import { ClientComponent } from './clients/client/client.component';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 import { MaterialAngularModule } from '../sharedModule/material-angular/material-angular.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { OsnPaginationComponent } from '../shared-components/osn-table/osn-pagination/osn-pagination.component';
 
 const routes: Routes = [
   {
@@ -54,7 +55,8 @@ const routes: Routes = [
     ClientsComponent,
     ClientComponent,
     ConfirmationModalComponent,
-    OsnTableComponent
+    OsnTableComponent,
+    OsnPaginationComponent
   ],
   imports: [
     CommonModule,

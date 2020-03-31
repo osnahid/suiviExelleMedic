@@ -1,19 +1,22 @@
 <table>
   <thead>
     <tr>
-      <th>
-        #
+      <th class='sortable' *ngFor="let column of columns" (click)="sort(column)">
+        <div>
+          <span>
+            {{ column.name }}
+          </span>
+          <nb-icon *ngIf="column.sort" [icon]="(column.sort == 'ascending')? 'arrow-down' : 'arrow-up'"></nb-icon>
+          <nb-icon *ngIf="!column.sort" class="ops" icon="swap-outline"></nb-icon>
+        </div>
       </th>
-      <th *ngFor="let column of columns">
-        {{ column.name }}
+      <th *ngIf="config !== null && config.actions.length > 0">
+        Actions
       </th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of dataShowed; let i=index">
-      <td>
-        {{ i+1 }}
-      </td>
+    <tr *ngFor="let item of dataShowed">
       <td *ngFor="let column of columns">
         <ng-container *ngIf="column.type == 'date'; else elseTemplate">
           {{ item[column.column] | date:"dd/MM/yy" }}
@@ -21,11 +24,15 @@
         <ng-template #elseTemplate>
           {{ item[column.column] }}
         </ng-template>
-
+      </td>
+      <td *ngIf="config !== null && config.actions.length > 0">
+        <button *ngFor="let action of config.actions" nbButton outline size="medium"
+        [nbTooltipIcon]="action.toolTipIcon" [nbTooltipStatus]="action.toolTipStatus" [nbTooltip]="action.toolTipText"
+        style="padding: 0.375rem; margin: 2px;" [status]="action.status"><nb-icon [icon]="action.icon"></nb-icon></button>
       </td>
     </tr>
   </tbody>
   <tfoot>
-
+    <app-osn-pagination></app-osn-pagination>
   </tfoot>
 </table>

@@ -2,12 +2,10 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ClientsService } from 'src/app/services/clients.service';
 import { Customer } from 'src/app/models/customer';
 
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from 'src/app/shared-components/confirmation-modal/confirmation-modal.component';
 import { Column } from 'src/app/shared-components/osn-table/column';
+import { OsnTableConfig } from 'src/app/shared-components/osn-table/config';
 
 
 @Component({
@@ -33,6 +31,35 @@ export class ClientsComponent implements OnInit, OnDestroy {
     {column: 'location', name: 'adresse', type: 'string'},
     {column: 'created_at', name: 'date de creation', type: 'date'},
   ];
+  osnTableConfig: OsnTableConfig = {
+    sortable: true,
+    actions: [
+      {
+        action: 'show',
+        icon: 'menu-outline',
+        status: 'primary',
+        toolTipIcon: 'menu',
+        toolTipStatus: 'primary',
+        toolTipText: 'afficher les details de client'
+      },
+      {
+        action: 'edit',
+        icon: 'edit-2-outline',
+        status: 'info',
+        toolTipIcon: 'edit-2',
+        toolTipStatus: 'info',
+        toolTipText: 'modifier ce client'
+      },
+      {
+        action: 'delete',
+        icon: 'trash-2-outline',
+        status: 'danger',
+        toolTipIcon: 'trash-2',
+        toolTipStatus: 'danger',
+        toolTipText: 'supprimer ce client'
+      }
+    ]
+  };
 
 
 

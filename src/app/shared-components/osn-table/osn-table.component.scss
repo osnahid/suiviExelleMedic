@@ -10,11 +10,28 @@ table {
     text-transform: capitalize;
   }
   td, th{
-    padding: 1.1em;
+    padding: .9em;
     border: none;
     margin: none;
+    white-space: nowrap;
   }
   tr{
     border-bottom: 0.0625rem solid #101426;
   }
+  th.sortable{
+    div{
+      display: flex;
+      justify-content: space-between;
+    .ops {
+      display: none;
+    }
+    &:hover{
+
+      .ops {
+        display: flex;
+        transform: rotate(90deg);
+      }
+    }
+  }
+    }
 }
