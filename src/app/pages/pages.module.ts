@@ -17,6 +17,8 @@ import { SubscriptionsComponent } from './subscriptions/subscriptions.component'
 import { MaterialAngularModule } from '../sharedModule/material-angular/material-angular.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { OsnPaginationComponent } from '../shared-components/osn-table/osn-pagination/osn-pagination.component';
+import { FormClientComponent } from './clients/form-client/form-client.component';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -39,7 +41,7 @@ const routes: Routes = [
         path: 'subscriptions', component: SubscriptionsComponent
       },
       {
-        path: '', redirectTo: '/dashboard', pathMatch: 'full'
+        path: '', redirectTo: 'dashboard', pathMatch: 'full'
       },
     ]
   }
@@ -56,11 +58,13 @@ const routes: Routes = [
     ClientComponent,
     ConfirmationModalComponent,
     OsnTableComponent,
-    OsnPaginationComponent
+    OsnPaginationComponent,
+    FormClientComponent
   ],
   imports: [
     CommonModule,
     NebularModule,
+    FormsModule,
     MaterialAngularModule,
     MatDialogModule,
     RouterModule.forChild(routes),
@@ -69,7 +73,8 @@ const routes: Routes = [
     RouterModule
   ],
   entryComponents: [
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    FormClientComponent
   ]
 })
 export class PagesModule { }

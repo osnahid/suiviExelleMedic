@@ -1,0 +1,63 @@
+<h3 mat-dialog-header>Ajouter un client</h3>
+<form #clientForm="ngForm" (ngSubmit)="onAdd(clientForm)">
+    <div mat-dialog-content>
+
+        <div class=" formRow">
+            <div class="label" style="margin-right: 8px;">Nom :</div>
+            <div>
+                <input nbInput type="text" required [(ngModel)]="theNewCustomer.name" fullWidth [status]="(nom.errors && (nom.dirty || clientForm.submitted)) ? 'danger':'basic'" #nom="ngModel" name="nom">
+            </div>
+            <div class="errorMessage" *ngIf="nom.errors && (nom.dirty || clientForm.submitted)">Le nom n'est pas indiqué</div>
+        </div>
+
+        <div class=" formRow">
+          <div class="label" style="margin-right: 8px;">Type :</div>
+          <div>
+            <nb-select fullWidth selected="APPROVED" required [(ngModel)]="theNewCustomer.type" [status]="(type.errors && (type.dirty || clientForm.submitted))? 'danger':'basic'" #type="ngModel" name="type">
+              <nb-option value="Clinique">Clinique</nb-option>
+              <nb-option value="Chirurgien">Chirurgien</nb-option>
+              <nb-option value="Orthésiste">Orthésiste</nb-option>
+              <nb-option value="Laboratoire">Laboratoire</nb-option>
+            </nb-select>
+          </div>
+          <div class="errorMessage" *ngIf="type.errors && (type.dirty || clientForm.submitted)">Le type n'est pas indiqué</div>
+      </div>
+      <div class=" formRow">
+        <div class="label" style="margin-right: 8px;">Telephone :</div>
+        <div>
+            <input nbInput type="phone" required [(ngModel)]="theNewCustomer.phone" fullWidth [status]="(phone.errors && (phone.dirty || clientForm.submitted)) ? 'danger':'basic'" #phone="ngModel" name="phone">
+        </div>
+        <div class="errorMessage" *ngIf="phone.errors && (phone.dirty || clientForm.submitted)">Le numero telephone n'est pas indiqué</div>
+      </div>
+
+      <div class=" formRow">
+        <div class="label" style="margin-right: 8px;">Email :</div>
+        <div>
+            <input nbInput type="email" required [(ngModel)]="theNewCustomer.email" fullWidth [status]="(email.errors && (email.dirty || clientForm.submitted)) ? 'danger':'basic'" #email="ngModel" name="email">
+        </div>
+        <div class="errorMessage" *ngIf="email.errors && (email.dirty || clientForm.submitted)">L'email n'est pas indiqué</div>
+      </div>
+
+      <div class=" formRow">
+        <div class="label" style="margin-right: 8px;">Adresse :</div>
+        <div>
+            <input nbInput type="text" required [(ngModel)]="theNewCustomer.location" fullWidth [status]="(location.errors && (location.dirty || clientForm.submitted)) ? 'danger':'basic'" #location="ngModel" name="location">
+        </div>
+        <div class="errorMessage" *ngIf="location.errors && (location.dirty || clientForm.submitted)">L'adresse n'est pas indiquée</div>
+      </div>
+
+      <div class=" formRow">
+        <div class="label" style="margin-right: 8px;">Ville :</div>
+        <div>
+            <input nbInput type="text" required [(ngModel)]="theNewCustomer.city" fullWidth [status]="(city.errors && (city.dirty || clientForm.submitted)) ? 'danger':'basic'" #city="ngModel" name="city">
+        </div>
+        <div class="errorMessage" *ngIf="city.errors && (city.dirty || clientForm.submitted)">La ville n'est pas indiquée</div>
+      </div>
+    </div>
+    <div mat-dialog-actions class="actionsContainer">
+      <button type="submit" mat-raised-button [disabled]="loading"  color="primary" [nbSpinner]="loading"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="tiny">Ajouter</button>
+      <button [mat-dialog-close]="false" mat-raised-button>Annuler</button>
+    </div>
+    </form>

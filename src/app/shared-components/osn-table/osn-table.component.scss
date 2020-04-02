@@ -8,12 +8,21 @@ table {
   }
   th{
     text-transform: capitalize;
+    white-space: nowrap;
   }
   td, th{
     padding: .9em;
     border: none;
     margin: none;
+  }
+  td{
+    max-width: 250px;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &.action {
+      white-space: nowrap;
+    }
   }
   tr{
     border-bottom: 0.0625rem solid #101426;

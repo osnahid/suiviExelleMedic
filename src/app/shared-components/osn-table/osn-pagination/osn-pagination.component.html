@@ -3,7 +3,7 @@
     <p class="label">
       elements par page:
     </p>
-    <nb-select [(selected)]="itemPerPage" (selectedChange)="paginate()">
+    <nb-select [(selected)]="itemPerPage" (selectedChange)="paginate(0)">
       <nb-option value="5">5</nb-option>
       <nb-option value="10">10</nb-option>
       <nb-option value="20">20</nb-option>
@@ -11,7 +11,7 @@
   </div>
   <div>
     <p class="label">
-      {{ sliceFirst }} à {{ sliceEnd }} sur {{ total }}
+      {{ sliceFirst + 1 }} à {{ sliceEnd }} sur {{ total }}
     </p>
   </div>
   <div>

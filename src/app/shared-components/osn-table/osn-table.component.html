@@ -1,3 +1,12 @@
+<div class="flex" style="justify-content: flex-end;">
+  <span class="flex" style="margin: 8px;">
+    <nb-icon icon="search-outline"></nb-icon>
+    <p class="label" style="margin: 0;">
+      Recherche :
+    </p>
+  </span>
+  <input nbInput (keyup)="applyFilter($event.target.value)" placeholder="Filtre">
+</div>
 <table>
   <thead>
     <tr>
@@ -6,7 +15,7 @@
           <span>
             {{ column.name }}
           </span>
-          <nb-icon *ngIf="column.sort" [icon]="(column.sort == 'ascending')? 'arrow-down' : 'arrow-up'"></nb-icon>
+          <nb-icon *ngIf="column.sort" [icon]="(column.sort == 'descending')? 'arrow-down' : 'arrow-up'"></nb-icon>
           <nb-icon *ngIf="!column.sort" class="ops" icon="swap-outline"></nb-icon>
         </div>
       </th>
@@ -19,25 +28,18 @@
     <tr *ngFor="let item of dataShowed | slice:sliceFirst:sliceEnd">
       <td *ngFor="let column of columns">
         <ng-container *ngIf="column.type == 'date'; else elseTemplate">
-          {{ item[column.column] | date:"dd/MM/yy" }}
+          {{ item[column.column] | date:"dd/MM/yyyy" }}
         </ng-container>
         <ng-template #elseTemplate>
           {{ item[column.column] }}
         </ng-template>
       </td>
-      <td *ngIf="config !== null && config.actions.length > 0">
+      <td class="action" *ngIf="config !== null && config.actions.length > 0">
         <button *ngFor="let action of config.actions" nbButton outline size="medium"
         [nbTooltipIcon]="action.toolTipIcon" [nbTooltipStatus]="action.toolTipStatus" [nbTooltip]="action.toolTipText"
         style="padding: 0.375rem; margin: 2px;" [status]="action.status"><nb-icon [icon]="action.icon"></nb-icon></button>
       </td>
     </tr>
   </tbody>
-  <tfoot>
-    <tr>
-      <td [attr.colspan]="columns.length + 1">
-        <app-osn-pagination [total]="dataShowed.length" (slices)="paginate($event)"></app-osn-pagination>
-      </td>
-    </tr>
-
-  </tfoot>
 </table>
+<app-osn-pagination [total]="dataShowed.length" (slices)="paginate($event)"></app-osn-pagination>

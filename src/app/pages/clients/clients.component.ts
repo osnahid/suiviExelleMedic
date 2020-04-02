@@ -6,6 +6,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from 'src/app/shared-components/confirmation-modal/confirmation-modal.component';
 import { Column } from 'src/app/shared-components/osn-table/column';
 import { OsnTableConfig } from 'src/app/shared-components/osn-table/config';
+import { element } from 'protractor';
+import { Subscription } from 'rxjs';
+import { FormClientComponent } from './form-client/form-client.component';
 
 
 @Component({
@@ -14,7 +17,8 @@ import { OsnTableConfig } from 'src/app/shared-components/osn-table/config';
   styleUrls: ['./clients.component.scss']
 })
 export class ClientsComponent implements OnInit, OnDestroy {
-
+  subscriptions: Subscription[] = [];
+  loading = false;
   constructor(
     private clientService: ClientsService,
     private dialog: MatDialog,
@@ -28,7 +32,6 @@ export class ClientsComponent implements OnInit, OnDestroy {
     {column: 'city', name: 'ville', type: 'string'},
     {column: 'phone', name: 'telephone', type: 'string'},
     {column: 'email', name: 'email', type: 'string'},
-    {column: 'location', name: 'adresse', type: 'string'},
     {column: 'created_at', name: 'date de creation', type: 'date'},
   ];
   osnTableConfig: OsnTableConfig = {
@@ -64,21 +67,26 @@ export class ClientsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.clientService.clients.subscribe(clients => {
+    this.loading = true;
+    const subscription = this.clientService.clients.subscribe(clients => {
       if (clients == null) {
         this.clientService.getClients();
       } else {
         this.clients = clients;
+        this.loading = false;
       }
     });
+    this.subscriptions.push(subscription);
+
   }
 
   ngOnDestroy() {
-
+    this.subscriptions.forEach(subs => {
+      subs.unsubscribe();
+    });
   }
 
-  applyFilter(filterValue: string) {
-  }
+
 
   delete(customer: Customer, index) {
     if (customer.id) {
@@ -86,7 +94,8 @@ export class ClientsComponent implements OnInit, OnDestroy {
         data: {
           confim: false,
           message: 'Êtes-vous sûr de vouloir supprimer ce client ?'
-        }
+        },
+        width: '40vw'
       });
       dialogRef.afterClosed().subscribe(data => {
         if (data === true) {
@@ -94,5 +103,9 @@ export class ClientsComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  OpenAddModal() {
+    const addModal = this.dialog.open(FormClientComponent);
   }
 }

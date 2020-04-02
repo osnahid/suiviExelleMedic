@@ -7,12 +7,12 @@ nbSpinnerSize="large">
     <app-header></app-header>
   </nb-layout-header>
 
-  <nb-layout-column>
+  <nb-layout-column (click)="expand()">
     <router-outlet></router-outlet>
   </nb-layout-column>
 
-  <nb-sidebar tag="left">
-    <nb-menu (click)="expand()" [items]="menu"></nb-menu>
+  <nb-sidebar state="compacted" tag="left">
+    <nb-menu [items]="menu"></nb-menu>
   </nb-sidebar>
 
 </nb-layout>
