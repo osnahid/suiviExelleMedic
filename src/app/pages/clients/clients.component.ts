@@ -6,9 +6,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from 'src/app/shared-components/confirmation-modal/confirmation-modal.component';
 import { Column } from 'src/app/shared-components/osn-table/column';
 import { OsnTableConfig } from 'src/app/shared-components/osn-table/config';
-import { element } from 'protractor';
 import { Subscription } from 'rxjs';
 import { FormClientComponent } from './form-client/form-client.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -22,7 +22,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
   constructor(
     private clientService: ClientsService,
     private dialog: MatDialog,
-
+    private route: Router
   ) { }
 
   clients: Customer[] = [];
@@ -86,9 +86,14 @@ export class ClientsComponent implements OnInit, OnDestroy {
     });
   }
 
+  refresh() {
+    this.clientService.getClients();
+    this.loading = true;
+  }
 
 
-  delete(customer: Customer, index) {
+
+  delete(customer: Customer) {
     if (customer.id) {
       const dialogRef = this.dialog.open(ConfirmationModalComponent, {
         data: {
@@ -104,8 +109,34 @@ export class ClientsComponent implements OnInit, OnDestroy {
       });
     }
   }
-
-  OpenAddModal() {
-    const addModal = this.dialog.open(FormClientComponent);
+  actionHandler(event) {
+    if (event.action === 'edit') {
+      this.openEditModal(event.object);
+    } else if (event.action === 'delete') {
+      this.delete(event.object);
+    } else if (event.action === 'show') {
+      this.route.navigate(['/pages/clients/', event.object.id]);
+    }
   }
+
+  openAddModal() {
+    this.dialog.open(FormClientComponent, {
+      data: {
+        action: 'add',
+      },
+      width: '50vw'
+    });
+  }
+
+  openEditModal(customer: Customer) {
+    this.dialog.open(FormClientComponent, {
+      data: {
+        action: 'edit',
+        customer
+      },
+      width: '50vw'
+    });
+  }
+
+
 }

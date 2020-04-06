@@ -1,5 +1,4 @@
 {
-  "enableIvy": false,
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",

@@ -26,3 +26,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   line-height: 1rem;
   margin-bottom: 8px;
 }
+a.phone, a.phone:hover, a.phone:active, a.visited {
+  color: rgb(51, 102, 255);
+  text-decoration: none;
+  font-size: bold;
+}

@@ -1,31 +1,30 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Customer } from 'src/app/models/customer';
+import { Employee } from 'src/app/models/customer';
+import { ClientsService } from 'src/app/services/clients.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NbToastrService } from '@nebular/theme';
-import { ClientsService } from 'src/app/services/clients.service';
 
 
 @Component({
-  selector: 'app-form-client',
-  templateUrl: './form-client.component.html',
-  styleUrls: ['./form-client.component.scss']
+  selector: 'app-form-employe',
+  templateUrl: './form-employe.component.html',
+  styleUrls: ['./form-employe.component.scss']
 })
-export class FormClientComponent implements OnInit {
+export class FormEmployeComponent implements OnInit {
+
+  newEmploye = new Employee();
   loading = false;
-
-  theNewCustomer = new Customer();
-
   constructor(
     private toast: NbToastrService,
-    public dialogRef: MatDialogRef<FormClientComponent>,
+    public dialogRef: MatDialogRef<FormEmployeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private clientApi: ClientsService
   ) { }
 
   ngOnInit(): void {
     if (this.data.action === 'edit') {
-      Object.keys(this.data.customer).forEach(key => {
-        this.theNewCustomer[key] = this.data.customer[key];
+      Object.keys(this.newEmploye).forEach(key => {
+        this.newEmploye[key] = this.data.employee[key];
       });
     }
   }
@@ -35,9 +34,9 @@ export class FormClientComponent implements OnInit {
     if (form !== undefined) {
       if (form.valid) {
         if (this.data.action === 'edit') {
-          this.clientApi.editClient(this.theNewCustomer);
+          this.clientApi.editEmployee(this.newEmploye.customer_id, this.newEmploye);
         } else if (this.data.action === 'add') {
-          this.clientApi.addClient(this.theNewCustomer);
+          this.clientApi.addEmployee(this.data.customer_id, this.newEmploye);
         }
         this.dialogRef.close();
       } else {
@@ -46,4 +45,5 @@ export class FormClientComponent implements OnInit {
       }
     }
   }
+
 }

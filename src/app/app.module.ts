@@ -9,6 +9,7 @@ import { PagesModule } from './pages/pages.module';
 import { AuthModule } from './auth/auth.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialAngularModule } from './sharedModule/material-angular/material-angular.module';
+import { SharedComponentsModule } from './shared-components/shared-components.module';
 
 @NgModule({
   declarations: [
@@ -19,8 +20,8 @@ import { MaterialAngularModule } from './sharedModule/material-angular/material-
     BrowserAnimationsModule,
     AppRoutingModule,
     NebularModule,
-    PagesModule,
     HttpClientModule,
+    SharedComponentsModule,
     AuthModule,
     MaterialAngularModule
   ],

@@ -16,8 +16,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   user = new User();
   constructor(
     private authS: AuthService,
-    private toast: NbToastrService,
-    private router: Router,
+    private toast: NbToastrService
   ) { }
 
   ngOnInit() {
@@ -31,22 +30,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   login(form: any) {
     this.loading = !this.loading;
     if (form.valid) {
-      this.authS.logMe(this.user.email, this.user.password).subscribe(
-        (resp: any) => {
-          // save access token in local storage
-          this.toast.success('', resp.success.user.name);
-
-          localStorage.setItem('accessToken', resp.success.token);
-          this.authS.setUser(resp.success.user);
-          console.log(resp.success.user.name);
-          this.router.navigate(['pages/dashboard']);
-
-
-      }, error => {
-        this.toast.danger('', 'L\'email ou le mot de passe sont incorrectes');
-        this.loading = !this.loading;
-      }
-    );
+      this.authS.logMe(this.user.email, this.user.password);
     } else {
       this.toast.warning('', 'Verifiez les champs');
     }

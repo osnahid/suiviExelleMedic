@@ -6,10 +6,10 @@
   <nb-card-header class="flex">
     <h3>Liste des clients</h3>
     <div>
-      <button hero status="primary" size="small" style="float: right;margin-left: 8px;" (click)="OpenAddModal()" nbButton>
+      <button hero status="primary" size="small" style="float: right;margin-left: 8px;" (click)="openAddModal()" nbButton>
         <nb-icon icon="plus"></nb-icon> Ajouter
       </button>
-      <button status="info" size="small" style="float: right;margin-left: 8px;" nbButton>
+      <button status="info" size="small" style="float: right;margin-left: 8px;" (click)="refresh()" nbButton>
         <nb-icon icon="refresh-outline"></nb-icon> Refresh
       </button>
       <button status="basic" size="small" style="float: right;margin-left: 8px;" [routerLink]="'/'" nbButton>
@@ -18,7 +18,7 @@
     </div>
   </nb-card-header>
   <nb-card-body>
-    <app-osn-table [data]='clients' [columns]='columnsClients' [config]='osnTableConfig'></app-osn-table>
+    <app-osn-table [data]='clients' [columns]='columnsClients' [config]='osnTableConfig' (action)='actionHandler($event)'></app-osn-table>
 </nb-card-body>
 </nb-card>
 

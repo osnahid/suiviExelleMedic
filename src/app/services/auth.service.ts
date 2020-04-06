@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
+import { NbToastrService } from '@nebular/theme';
+import { ErrorHandlerService } from './error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +21,9 @@ export class AuthService {
 
   constructor(
     private api: HttpClient,
-    private router: Router
+    private toast: NbToastrService,
+    private router: Router,
+    private handlerErrors: ErrorHandlerService
   ) {
 
   }
@@ -46,7 +50,19 @@ export class AuthService {
   }
 
   logMe(email, password) {
-    return this.api.post( this.baseApiUrl + 'login', {email, password}, {headers: this.headers} );
+    this.api.post( this.baseApiUrl + 'login', {email, password}, {headers: this.headers} ).subscribe(
+      (resp: any) => {
+        this.toast.success('', 'welcome');
+
+        localStorage.setItem('accessToken', resp.success.token);
+        this.setUser(resp.success.user);
+        this.router.navigate(['pages/dashboard']);
+
+
+    }, error => {
+      this.handlerErrors.getErrorStatus(error);
+    }
+  );
   }
 
   logOut() {

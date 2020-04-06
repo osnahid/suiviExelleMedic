@@ -6,8 +6,6 @@ import { NebularModule } from '../sharedModule/nebular/nebular.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { Routes, RouterModule } from '@angular/router';
 import { HeaderComponent } from '../shared-components/header/header.component';
-import { ConfirmationModalComponent } from '../shared-components/confirmation-modal/confirmation-modal.component';
-import { OsnTableComponent } from '../shared-components/osn-table/osn-table.component';
 
 import { ListLastestInstallationComponent } from './dashboard/list-lastest-installation/list-lastest-installation.component';
 import { ListSoonExpiredSubscriptionComponent } from './dashboard/list-soon-expired-subscription/list-soon-expired-subscription.component';
@@ -16,15 +14,21 @@ import { ClientComponent } from './clients/client/client.component';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 import { MaterialAngularModule } from '../sharedModule/material-angular/material-angular.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { OsnPaginationComponent } from '../shared-components/osn-table/osn-pagination/osn-pagination.component';
 import { FormClientComponent } from './clients/form-client/form-client.component';
 import { FormsModule } from '@angular/forms';
+import { FormEmployeComponent } from './clients/client/form-employe/form-employe.component';
+import { SharedComponentsModule } from '../shared-components/shared-components.module';
+import { SettingsModule } from './settings/settings.module';
 
 const routes: Routes = [
+
   {
     path: '',
     component: PagesComponent,
     children : [
+      {
+        path: '', redirectTo: '/dashboard', pathMatch: 'full'
+      },
       {
         path: 'dashboard', component: DashboardComponent
       },
@@ -39,12 +43,10 @@ const routes: Routes = [
       },
       {
         path: 'subscriptions', component: SubscriptionsComponent
-      },
-      {
-        path: '', redirectTo: 'dashboard', pathMatch: 'full'
-      },
+      }
     ]
-  }
+  },
+
 ];
 
 @NgModule({
@@ -56,25 +58,25 @@ const routes: Routes = [
     ListSoonExpiredSubscriptionComponent,
     ClientsComponent,
     ClientComponent,
-    ConfirmationModalComponent,
-    OsnTableComponent,
-    OsnPaginationComponent,
-    FormClientComponent
+    FormClientComponent,
+    FormEmployeComponent,
   ],
   imports: [
     CommonModule,
     NebularModule,
     FormsModule,
+    SharedComponentsModule,
+    SettingsModule,
     MaterialAngularModule,
     MatDialogModule,
-    RouterModule.forChild(routes),
+    RouterModule.forChild(routes)
   ],
   exports: [
     RouterModule
   ],
   entryComponents: [
-    ConfirmationModalComponent,
-    FormClientComponent
+    FormClientComponent,
+    FormEmployeComponent,
   ]
 })
 export class PagesModule { }

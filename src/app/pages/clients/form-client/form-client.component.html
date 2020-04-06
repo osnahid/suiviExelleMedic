@@ -1,4 +1,4 @@
-<h3 mat-dialog-header>Ajouter un client</h3>
+<h3 mat-dialog-header>{{ (data.action === 'edit')? 'Modifier' : 'Ajouter' }} un client</h3>
 <form #clientForm="ngForm" (ngSubmit)="onAdd(clientForm)">
     <div mat-dialog-content>
 
@@ -13,7 +13,7 @@
         <div class=" formRow">
           <div class="label" style="margin-right: 8px;">Type :</div>
           <div>
-            <nb-select fullWidth selected="APPROVED" required [(ngModel)]="theNewCustomer.type" [status]="(type.errors && (type.dirty || clientForm.submitted))? 'danger':'basic'" #type="ngModel" name="type">
+            <nb-select fullWidth required [(ngModel)]="theNewCustomer.type" [status]="(type.errors && (type.dirty || clientForm.submitted))? 'danger':'basic'" #type="ngModel" name="type">
               <nb-option value="Clinique">Clinique</nb-option>
               <nb-option value="Chirurgien">Chirurgien</nb-option>
               <nb-option value="Orthésiste">Orthésiste</nb-option>
@@ -33,7 +33,7 @@
       <div class=" formRow">
         <div class="label" style="margin-right: 8px;">Email :</div>
         <div>
-            <input nbInput type="email" required [(ngModel)]="theNewCustomer.email" fullWidth [status]="(email.errors && (email.dirty || clientForm.submitted)) ? 'danger':'basic'" #email="ngModel" name="email">
+            <input nbInput type="email" [(ngModel)]="theNewCustomer.email" fullWidth [status]="(email.errors && (email.dirty || clientForm.submitted)) ? 'danger':'basic'" #email="ngModel" name="email">
         </div>
         <div class="errorMessage" *ngIf="email.errors && (email.dirty || clientForm.submitted)">L'email n'est pas indiqué</div>
       </div>
@@ -57,7 +57,7 @@
     <div mat-dialog-actions class="actionsContainer">
       <button type="submit" mat-raised-button [disabled]="loading"  color="primary" [nbSpinner]="loading"
       nbSpinnerStatus="primary"
-      nbSpinnerSize="tiny">Ajouter</button>
+      nbSpinnerSize="tiny">{{ (data.action === 'edit')? 'Modifier' : 'Ajouter' }}</button>
       <button [mat-dialog-close]="false" mat-raised-button>Annuler</button>
     </div>
     </form>

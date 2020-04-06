@@ -38,7 +38,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Paramètres',
     icon: 'settings-outline',
-    link: '/pages/settings',
     children: [
       {
         title: 'mon compte',
@@ -56,7 +55,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Les Materiels',
         link: '/pages/settings/materiels',
       },
-
+      {
+        title: 'Les Softwares',
+        link: '/pages/settings/softwares',
+      },
     ],
   },
   {

@@ -30,16 +30,27 @@
         <ng-container *ngIf="column.type == 'date'; else elseTemplate">
           {{ item[column.column] | date:"dd/MM/yyyy" }}
         </ng-container>
-        <ng-template #elseTemplate>
-          {{ item[column.column] }}
+        <ng-template #elseTemplate >
+          <ng-container #elseTemplate *ngIf="column.type == 'phone'; else imageTemplate">
+            <a class="phone" href="tel:{{ item[column.column] }}">{{ item[column.column] }}</a>
+          </ng-container>
+          <ng-template #imageTemplate>
+            <ng-container #elseTemplate *ngIf="column.type == 'image'; else normalTemplate">
+              <img [src]="item[column.column]" alt="">
+            </ng-container>
+            <ng-template #normalTemplate>
+              {{ item[column.column] }}
+            </ng-template>
+          </ng-template>
         </ng-template>
       </td>
       <td class="action" *ngIf="config !== null && config.actions.length > 0">
         <button *ngFor="let action of config.actions" nbButton outline size="medium"
-        [nbTooltipIcon]="action.toolTipIcon" [nbTooltipStatus]="action.toolTipStatus" [nbTooltip]="action.toolTipText"
+        [nbTooltipIcon]="action.toolTipIcon" [nbTooltipStatus]="action.toolTipStatus" (click)="actionEmitter({action: action.action, object: item})" [nbTooltip]="action.toolTipText"
         style="padding: 0.375rem; margin: 2px;" [status]="action.status"><nb-icon [icon]="action.icon"></nb-icon></button>
       </td>
     </tr>
   </tbody>
 </table>
+<app-no-data *ngIf="dataShowed.length === 0" message="Aucune donnée disponible"></app-no-data>
 <app-osn-pagination [total]="dataShowed.length" (slices)="paginate($event)"></app-osn-pagination>

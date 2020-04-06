@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Column } from './column';
 import { OsnTableConfig } from './config';
 
@@ -18,6 +18,8 @@ export class OsnTableComponent implements OnInit {
     this.dataShowed = dt.sort((a, b) => {
       if (a.created_at && b.created_at) {
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      } else if (a.name) {
+        return a.name.length - b.name.length;
       } else {
         return 0;
       }
@@ -27,6 +29,8 @@ export class OsnTableComponent implements OnInit {
 
   @Input() columns: Column[];
   @Input() config: OsnTableConfig = null;
+
+  @Output() action = new EventEmitter<{action: string, object: any}>();
 
   constructor() { }
 
@@ -58,6 +62,10 @@ export class OsnTableComponent implements OnInit {
   paginate(event) {
     this.sliceFirst = event.sliceFirst;
     this.sliceEnd = event.sliceEnd;
+  }
+
+  actionEmitter(actionType) {
+    this.action.emit(actionType);
   }
 
 

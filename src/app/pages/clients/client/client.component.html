@@ -1,1 +1,51 @@
-<p>client works!</p>
+<div [nbSpinner]="loading"
+nbSpinnerStatus="danger"
+nbSpinnerSize="large"
+nbSpinnerMessage="loading...">
+  <div class="flex">
+    <h1>
+      {{ customer.name }}
+    </h1>
+    <div>
+      <button status="basic" size="small" style="float: right;margin-left: 8px;" [routerLink]="'/pages/clients'" nbButton>
+        <nb-icon icon="arrow-back-outline"></nb-icon> Retour
+      </button>
+    </div>
+  </div>
+  <div class="main">
+    <nb-card>
+      <nb-card-header class="flex">
+        <h5>Informations</h5>
+        <div>
+          <button hero status="primary" size="small" style="float: right;margin-left: 8px;" (click)="openEditModal()" nbButton>
+            <nb-icon icon="edit-2"></nb-icon> Modifier
+          </button>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="infoContainer">
+          <div *ngFor="let column of columnsClients" class="info">
+            <h4 class="label"> {{ column.name }} </h4>
+            <p>{{ customer[column.column] }}</p>
+          </div>
+        </div>
+
+      </nb-card-body>
+    </nb-card>
+    <nb-card>
+      <nb-card-header class="flex">
+        <h5>Employés</h5>
+        <div>
+          <button hero status="primary" size="small" style="float: right;margin-left: 8px;" (click)="openAddEmployeModal()" nbButton>
+            <nb-icon icon="plus"></nb-icon> Ajouter
+          </button>
+        </div>
+
+      </nb-card-header>
+      <nb-card-body>
+        <app-osn-table [data]="customer.employees" [columns]="columnsEmploye" [config]="osnTableConfig" (action)="actionHandler($event)"></app-osn-table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+</div>

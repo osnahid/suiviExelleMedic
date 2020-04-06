@@ -1,1 +1,24 @@
-<p>companies works!</p>
+<nb-card
+  [nbSpinner]="loading"
+  nbSpinnerStatus="danger"
+  nbSpinnerSize="large"
+  nbSpinnerMessage="loading...">
+  <nb-card-header class="flex">
+    <h3>Liste des partenaires</h3>
+    <div>
+      <button hero status="primary" size="small" style="float: right;margin-left: 8px;" (click)="openAddModal()" nbButton>
+        <nb-icon icon="plus"></nb-icon> Ajouter
+      </button>
+      <button status="info" size="small" style="float: right;margin-left: 8px;" (click)="refresh()" nbButton>
+        <nb-icon icon="refresh-outline"></nb-icon> Refresh
+      </button>
+      <button status="basic" size="small" style="float: right;margin-left: 8px;" [routerLink]="'/'" nbButton>
+        <nb-icon icon="arrow-back-outline"></nb-icon> Retour
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <app-osn-table [data]='companies' [columns]='columnsCompanies' [config]='osnTableConfig' (action)='actionHandler($event)'></app-osn-table>
+</nb-card-body>
+</nb-card>
+

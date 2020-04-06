@@ -1,0 +1,19 @@
+.main {
+  display: grid;
+  @media (min-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  column-gap: 8px;
+  .infoContainer {
+
+    .info {
+      flex-wrap: wrap;
+      display: flex;
+      justify-content: space-between;
+      h4.label{
+        text-transform: capitalize;
+      }
+    }
+  }
+
+}
