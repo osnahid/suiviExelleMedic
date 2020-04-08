@@ -1,1 +1,50 @@
-<p>form-company works!</p>
+<h3 mat-dialog-header>{{ (data.action === 'edit')? 'Modifier' : 'Ajouter' }} un partenaire</h3>
+<form #companyForm="ngForm" (ngSubmit)="onAdd(companyForm)">
+    <div mat-dialog-content>
+        <div>
+          <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput accept=".PNG, .JPG, .JPEG">
+          <div (click)="fileInput.click()" class="inputFile">
+            <nb-icon icon="plus-outline"></nb-icon>
+          </div>
+        </div>
+        <div class=" formRow">
+            <div class="label" style="margin-right: 8px;">Nom :</div>
+            <div>
+                <input nbInput type="text" required [(ngModel)]="newCompany.name" fullWidth [status]="(nom.errors && (nom.dirty || companyForm.submitted)) ? 'danger':'basic'" #nom="ngModel" name="nom">
+            </div>
+            <div class="errorMessage" *ngIf="nom.errors && (nom.dirty || companyForm.submitted)">Le nom n'est pas indiqué</div>
+        </div>
+
+
+      <div class=" formRow">
+        <div class="label" style="margin-right: 8px;">Telephone :</div>
+        <div>
+            <input nbInput type="phone" required [(ngModel)]="newCompany.phone" fullWidth [status]="(phone.errors && (phone.dirty || companyForm.submitted)) ? 'danger':'basic'" #phone="ngModel" name="phone">
+        </div>
+        <div class="errorMessage" *ngIf="phone.errors && (phone.dirty || companyForm.submitted)">Le numero telephone n'est pas indiqué</div>
+      </div>
+
+      <div class=" formRow">
+        <div class="label" style="margin-right: 8px;">Email de support :</div>
+        <div>
+            <input nbInput type="email" [(ngModel)]="newCompany.support_email" fullWidth [status]="(email.errors && (email.dirty || companyForm.submitted)) ? 'danger':'basic'" #email="ngModel" name="email">
+        </div>
+        <div class="errorMessage" *ngIf="email.errors && (email.dirty || companyForm.submitted)">L'email n'est pas indiqué</div>
+      </div>
+
+      <div class=" formRow">
+        <div class="label" style="margin-right: 8px;">Adresse :</div>
+        <div>
+            <input nbInput type="text" required [(ngModel)]="newCompany.location" fullWidth [status]="(location.errors && (location.dirty || companyForm.submitted)) ? 'danger':'basic'" #location="ngModel" name="location">
+        </div>
+        <div class="errorMessage" *ngIf="location.errors && (location.dirty || companyForm.submitted)">L'adresse n'est pas indiquée</div>
+      </div>
+
+    </div>
+    <div mat-dialog-actions class="actionsContainer">
+      <button type="submit" mat-raised-button [disabled]="loading"  color="primary" [nbSpinner]="loading"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="tiny">{{ (data.action === 'edit')? 'Modifier' : 'Ajouter' }}</button>
+      <button [mat-dialog-close]="false" mat-raised-button>Annuler</button>
+    </div>
+    </form>

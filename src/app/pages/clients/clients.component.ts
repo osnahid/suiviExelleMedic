@@ -77,7 +77,6 @@ export class ClientsComponent implements OnInit, OnDestroy {
       }
     });
     this.subscriptions.push(subscription);
-
   }
 
   ngOnDestroy() {

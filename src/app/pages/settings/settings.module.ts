@@ -8,21 +8,24 @@ import { CompaniesComponent } from './companies/companies.component';
 import { MaterialsComponent } from './materials/materials.component';
 import { SoftwaresComponent } from './softwares/softwares.component';
 import { RouterModule, Routes } from '@angular/router';
-import { OsnTableComponent } from 'src/app/shared-components/osn-table/osn-table.component';
 import { NebularModule } from 'src/app/sharedModule/nebular/nebular.module';
 import { SharedComponentsModule } from 'src/app/shared-components/shared-components.module';
 import { FormCompanyComponent } from './companies/form-company/form-company.component';
+import { MaterialAngularModule } from 'src/app/sharedModule/material-angular/material-angular.module';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
     path: '',
     component: SettingsComponent,
     children: [
-      {
-        path: 'settings/', redirectTo: 'myAccount', pathMatch: 'full'
-      },
+
       {
         path: 'myAccount', component: MyaccountComponent
+      },
+      {
+        path: '', redirectTo: 'myAccount', pathMatch: 'full'
       },
       {
         path: 'accounts', component: AccountsComponent
@@ -53,11 +56,17 @@ const routes: Routes = [
   imports: [
     CommonModule,
     NebularModule,
+    FormsModule,
     SharedComponentsModule,
+    MaterialAngularModule,
+    MatDialogModule,
     RouterModule.forChild(routes)
   ],
   exports: [
     RouterModule
+  ],
+  entryComponents: [
+    FormCompanyComponent
   ]
 })
 export class SettingsModule { }

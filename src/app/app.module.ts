@@ -22,6 +22,7 @@ import { SharedComponentsModule } from './shared-components/shared-components.mo
     NebularModule,
     HttpClientModule,
     SharedComponentsModule,
+    PagesModule,
     AuthModule,
     MaterialAngularModule
   ],

@@ -27,22 +27,29 @@ const routes: Routes = [
     component: PagesComponent,
     children : [
       {
-        path: '', redirectTo: '/dashboard', pathMatch: 'full'
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
       },
       {
-        path: 'dashboard', component: DashboardComponent
+        path: 'dashboard',
+        component: DashboardComponent
       },
       {
-        path: 'settings', loadChildren: './settings/settings.module#SettingsModule'
+        path: 'settings',
+        loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule)
       },
       {
-        path: 'clients', component: ClientsComponent
+        path: 'clients',
+        component: ClientsComponent
       },
       {
-        path: 'clients/:client_id', component: ClientComponent
+        path: 'clients/:client_id',
+        component: ClientComponent
       },
       {
-        path: 'subscriptions', component: SubscriptionsComponent
+        path: 'subscriptions',
+        component: SubscriptionsComponent
       }
     ]
   },
@@ -66,7 +73,6 @@ const routes: Routes = [
     NebularModule,
     FormsModule,
     SharedComponentsModule,
-    SettingsModule,
     MaterialAngularModule,
     MatDialogModule,
     RouterModule.forChild(routes)

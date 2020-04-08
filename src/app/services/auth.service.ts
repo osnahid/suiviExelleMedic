@@ -60,6 +60,7 @@ export class AuthService {
 
 
     }, error => {
+      this.setUser(null);
       this.handlerErrors.getErrorStatus(error);
     }
   );

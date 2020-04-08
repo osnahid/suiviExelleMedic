@@ -1,5 +1,5 @@
 <h3 mat-dialog-title> {{ data.message }} </h3>
-<mat-dialog-actions>
-    <button type="button" [mat-dialog-close]="true" mat-raised-button color="primary">oui</button>
-    <button [mat-dialog-close]="false" mat-raised-button>non</button>
+<mat-dialog-actions class="actionsContainer">
+    <button type="button" [mat-dialog-close]="true" nbButton status="primary" size="small">oui</button>
+      <button style="margin-left: 8px;" [mat-dialog-close]="false" size="small" nbButton status="basic">non</button>
 </mat-dialog-actions>

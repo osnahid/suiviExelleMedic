@@ -31,3 +31,12 @@ a.phone, a.phone:hover, a.phone:active, a.visited {
   text-decoration: none;
   font-size: bold;
 }
+
+.mat-dialog-container {
+  background-color: #222b45;
+}
+.actionsContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}

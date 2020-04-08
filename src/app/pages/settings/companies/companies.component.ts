@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CompaniesService } from 'src/app/services/companies.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,13 +6,14 @@ import { Router } from '@angular/router';
 import { Company } from 'src/app/models/company';
 import { Column } from 'src/app/shared-components/osn-table/column';
 import { OsnTableConfig } from 'src/app/shared-components/osn-table/config';
+import { FormCompanyComponent } from './form-company/form-company.component';
 
 @Component({
   selector: 'app-companies',
   templateUrl: './companies.component.html',
   styleUrls: ['./companies.component.scss']
 })
-export class CompaniesComponent implements OnInit {
+export class CompaniesComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   loading = false;
@@ -65,7 +66,7 @@ export class CompaniesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.companiesApi.companies.subscribe( (data: Company[]) => {
+    const sub = this.companiesApi.companies.subscribe( (data: Company[]) => {
       if (data === null) {
         this.companiesApi.getCompanies();
       } else {
@@ -73,13 +74,24 @@ export class CompaniesComponent implements OnInit {
         this.loading = false;
       }
     });
+    this.subscriptions.push(sub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
   openAddModal() {
-
+    this.dialog.open(FormCompanyComponent, {
+      data: {
+        action: 'add'
+      },
+      width: '50vw'
+    });
   }
 
   refresh() {
-
+    this.companiesApi.getCompanies();
+    this.loading = true;
   }
 
   actionHandler(event) {

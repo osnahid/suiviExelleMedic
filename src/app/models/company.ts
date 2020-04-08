@@ -1,6 +1,6 @@
 export class Company {
   id: 1;
-  logo: string;
+  logo: string | File;
   name: string;
   support_email: string;
   phone: string;

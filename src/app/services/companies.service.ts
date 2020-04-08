@@ -36,4 +36,38 @@ export class CompaniesService {
       this.errorHandler.getErrorStatus(error);
     });
   }
+
+  addCompany(company: Company) {
+    this.api.post(this.baseApiUrl + 'companies', company, {
+      headers: this.header
+    }).subscribe((success: any) => {
+      this.toast.success('', success.status);
+      const currentData = this.companies.getValue();
+      currentData.push(success.company);
+      this.companies.next(currentData);
+    }, error => this.errorHandler.getErrorStatus(error));
+  }
+
+  editCompany(company: Company) {
+    this.api.post(this.baseApiUrl + 'companies/' + company.id, company, {
+      headers: this.header
+    }).subscribe((success: any) => {
+      this.toast.success('', success.status);
+      const currentData = this.companies.getValue();
+      const index = currentData.findIndex(comp => success.company.id === comp.id);
+      currentData[index] = success.company;
+      this.companies.next(currentData);
+    }, error => this.errorHandler.getErrorStatus(error));
+  }
+
+  deleteCompany(company: Company) {
+    this.api.delete(this.baseApiUrl + 'companies/' + company.id, {
+      headers: this.header
+    }).subscribe((success: any) => {
+      this.toast.danger('', success.status);
+      const currentData = this.companies.getValue();
+      currentData.splice(currentData.findIndex(comp => comp.id === company.id), 1);
+      this.companies.next(currentData);
+    }, error => this.errorHandler.getErrorStatus(error));
+  }
 }
