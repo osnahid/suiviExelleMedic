@@ -34,7 +34,13 @@ const routes: Routes = [
         path: 'partners', component: CompaniesComponent
       },
       {
-        path: 'materiels', component: MaterialsComponent
+        path: 'partners/:company_id/materials', component: MaterialsComponent
+      },
+      {
+        path: 'partners/:company_id/softwares', component: SoftwaresComponent
+      },
+      {
+        path: 'materials', component: MaterialsComponent
       },
       {
         path: 'softwares', component: SoftwaresComponent

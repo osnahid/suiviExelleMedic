@@ -29,6 +29,8 @@ export class OsnTableComponent implements OnInit {
 
   @Input() columns: Column[];
   @Input() config: OsnTableConfig = null;
+  baseApiUrl = 'http://127.0.0.1:8001';
+
 
   @Output() action = new EventEmitter<{action: string, object: any}>();
 

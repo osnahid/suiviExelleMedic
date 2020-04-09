@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { Software } from '../models/software';
+import { Material } from '../models/material';
 import { ErrorHandlerService } from './error-handler.service';
 import { NbToastrService } from '@nebular/theme';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -9,8 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
-export class SoftwaresService {
-
+export class MaterialsService {
   constructor(
     private api: HttpClient,
     private errorHandler: ErrorHandlerService,
@@ -25,36 +24,36 @@ export class SoftwaresService {
     { Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
   'Content-Type': 'application/json; charset=utf-8'});
 
-  allsoftwares = new BehaviorSubject<Software[]>(null);
-  softwaresByCompany = new BehaviorSubject<Software[]>(null);
+  allMaterials = new BehaviorSubject<Material[]>(null);
+  materialsByCompany = new BehaviorSubject<Material[]>(null);
 
-  getAllsoftwares() {
-    this.api.get(this.baseApiUrl + '/softwares', { headers: this.header}).subscribe((success: Software[]) => {
+  getAllMaterials() {
+    this.api.get(this.baseApiUrl + '/materials', { headers: this.header}).subscribe((success: Material[]) => {
       console.log(success);
-      this.allsoftwares.next(success);
+      this.allMaterials.next(success);
     }, error => this.errorHandler.getErrorStatus(error));
   }
 
-  getsoftwaresByCompany(company_id: number) {
-    this.api.get(this.baseApiUrl + 'companies/' + company_id + '/softwares', { headers: this.header}).subscribe((success: Software[]) => {
+  getMaterialsByCompany(company_id: number) {
+    this.api.get(this.baseApiUrl + 'companies/' + company_id + '/materials', { headers: this.header}).subscribe((success: Material[]) => {
       console.log(success);
-      this.allsoftwares.next(success);
+      this.allMaterials.next(success);
     }, error => this.errorHandler.getErrorStatus(error));
   }
 
-  savesoftware(software: Software) {
+  saveMaterial(material: Material) {
 
     const headers = new HttpHeaders({Authorization: 'Bearer ' + localStorage.getItem('accessToken')});
     headers.append('Content-Type', 'multipart/form-data');
 
     const formData: FormData = new FormData();
 
-    Object.keys(software).forEach(key => {
-      if ((software['image'] && key === 'image') || (key !== 'image' && software[key])) {
-        formData.append(key, software[key]);
+    Object.keys(material).forEach(key => {
+      if ((material['image'] && key === 'image') || (key !== 'image' && material[key])) {
+        formData.append(key, material[key]);
       }
     });
-    this.api.post(this.baseApiUrl + 'companies/' + software.company_id + '/softwares', formData, {headers}).subscribe((success: any) => {
+    this.api.post(this.baseApiUrl + 'companies/' + material.company_id + '/materials', formData, {headers}).subscribe((success: any) => {
       this.toast.success('', success.status);
       // to figure out
       this.route.params.subscribe(params => {
@@ -63,20 +62,20 @@ export class SoftwaresService {
     }, error => this.errorHandler.getErrorStatus(error));
   }
 
-  editsoftware(software: Software) {
+  editMaterial(material: Material) {
 
     const headers = new HttpHeaders({Authorization: 'Bearer ' + localStorage.getItem('accessToken')});
     headers.append('Content-Type', 'multipart/form-data');
 
     const formData: FormData = new FormData();
 
-    Object.keys(software).forEach(key => {
-      if ((software['image'] && key === 'image') || (key !== 'image' && software[key])) {
-        formData.append(key, software[key]);
+    Object.keys(material).forEach(key => {
+      if ((material['image'] && key === 'image') || (key !== 'image' && material[key])) {
+        formData.append(key, material[key]);
       }
     });
     this.api.post(
-    this.baseApiUrl + 'companies/' + software.company_id + '/softwares/' + software.id,
+    this.baseApiUrl + 'companies/' + material.company_id + '/materials/' + material.id,
     formData,
     {headers}
     ).subscribe((success: any) => {
@@ -88,8 +87,8 @@ export class SoftwaresService {
     }, error => this.errorHandler.getErrorStatus(error));
   }
 
-  deletesoftware(software_id: number) {
-    this.api.delete(this.baseApiUrl + '/softwares/' + software_id, { headers: this.header}).subscribe((success: any) => {
+  deleteMaterial(material_id: number) {
+    this.api.delete(this.baseApiUrl + '/materials/' + material_id, { headers: this.header}).subscribe((success: any) => {
       this.toast.danger('', success.status);
     }, error => this.errorHandler.getErrorStatus(error));
   }

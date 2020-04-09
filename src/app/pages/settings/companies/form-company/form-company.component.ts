@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Inject } from '@angular/core';
 import { NbToastrService } from '@nebular/theme';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -14,6 +15,8 @@ export class FormCompanyComponent implements OnInit {
 
   loading = false;
   newCompany = new Company();
+  img_url = null;
+
   constructor(
     private toast: NbToastrService,
     public dialogRef: MatDialogRef<FormClientComponent>,
@@ -24,12 +27,22 @@ export class FormCompanyComponent implements OnInit {
   ngOnInit(): void {
     if (this.data.action === 'edit') {
       Object.keys(this.data.company).forEach(key => {
-        this.newCompany[key] = this.data.company[key];
+        if (key === 'logo') {
+          this.img_url = 'http://127.0.0.1:8001' + this.data.company[key];
+        } else {
+          this.newCompany[key] = this.data.company[key];
+        }
       });
     }
   }
   onFileChanged(event) {
-
+    console.log(event);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.img_url = e.target.result;
+      this.newCompany.logo = event.target.files[0];
+    };
+    reader.readAsDataURL(event.target.files[0]); // convert to base64 string
   }
 
   onAdd(form) {

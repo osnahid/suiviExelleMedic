@@ -7,6 +7,7 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
 import { NoDataComponent } from './no-data/no-data.component';
 import { OsnPaginationComponent } from './osn-table/osn-pagination/osn-pagination.component';
 import { OsnTableComponent } from './osn-table/osn-table.component';
+import { OsnProductShowcaseComponent } from './osn-product-showcase/osn-product-showcase.component';
 
 
 
@@ -15,7 +16,8 @@ import { OsnTableComponent } from './osn-table/osn-table.component';
     OsnTableComponent,
     OsnPaginationComponent,
     NoDataComponent,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    OsnProductShowcaseComponent
   ],
   imports: [
     CommonModule,

@@ -7,6 +7,7 @@ import { Company } from 'src/app/models/company';
 import { Column } from 'src/app/shared-components/osn-table/column';
 import { OsnTableConfig } from 'src/app/shared-components/osn-table/config';
 import { FormCompanyComponent } from './form-company/form-company.component';
+import { ConfirmationModalComponent } from 'src/app/shared-components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-companies',
@@ -35,12 +36,20 @@ export class CompaniesComponent implements OnInit, OnDestroy {
     sortable: true,
     actions: [
       {
-        action: 'show',
-        icon: 'menu-outline',
+        action: 'softwares',
+        icon: 'browser-outline',
         status: 'primary',
-        toolTipIcon: 'menu',
+        toolTipIcon: 'browser',
         toolTipStatus: 'primary',
-        toolTipText: 'afficher les details de client'
+        toolTipText: 'afficher les logiciels'
+      },
+      {
+        action: 'materials',
+        icon: 'cube-outline',
+        status: 'success',
+        toolTipIcon: 'cube',
+        toolTipStatus: 'success',
+        toolTipText: 'afficher les produits'
       },
       {
         action: 'edit',
@@ -89,13 +98,44 @@ export class CompaniesComponent implements OnInit, OnDestroy {
     });
   }
 
+  openEditModal(company: Company) {
+    this.dialog.open(FormCompanyComponent, {
+      data: {
+        action: 'edit',
+        company
+      },
+      width: '40vw'
+    });
+  }
+
+
   refresh() {
     this.companiesApi.getCompanies();
     this.loading = true;
   }
 
   actionHandler(event) {
+    if (event.action === 'delete') {
+      this.delete(event.object);
+    } else if (event.action === 'edit') {
+      this.openEditModal(event.object);
+    }
+  }
 
+  delete(company: Company) {
+    const confirm = this.dialog.open(ConfirmationModalComponent, {
+      data: {
+        confim: false,
+        message: 'Êtes-vous sûr de vouloir supprimer ce partenaire ?'
+      },
+      width: '40vw'
+    });
+    confirm.afterClosed().subscribe(e => {
+      if (e === true) {
+        this.companiesApi.deleteCompany(company);
+
+      }
+    });
   }
 
 }

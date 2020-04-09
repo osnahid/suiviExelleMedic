@@ -36,7 +36,7 @@
           </ng-container>
           <ng-template #imageTemplate>
             <ng-container #elseTemplate *ngIf="column.type == 'image'; else normalTemplate">
-              <img [src]="item[column.column]" alt="">
+              <img style="border-radius: 0.25rem;" [src]="baseApiUrl + item[column.column]" alt="">
             </ng-container>
             <ng-template #normalTemplate>
               {{ item[column.column] }}

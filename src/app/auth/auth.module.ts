@@ -7,6 +7,7 @@ import { AuthComponent } from './auth.component';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LogoutComponent } from './logout/logout.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 const routes: Routes = [
@@ -32,7 +33,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [LoginComponent, AuthComponent, LogoutComponent],
+  declarations: [LoginComponent, AuthComponent, LogoutComponent, ResetPasswordComponent],
   imports: [
     CommonModule,
     NebularModule,

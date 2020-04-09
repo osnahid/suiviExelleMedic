@@ -38,19 +38,53 @@ export class CompaniesService {
   }
 
   addCompany(company: Company) {
-    this.api.post(this.baseApiUrl + 'companies', company, {
-      headers: this.header
+    const header = new HttpHeaders(
+      {
+        Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+      }
+      );
+    header.append('Content-Type', 'multipart/form-data');
+
+    const formData = new FormData();
+
+    Object.keys(company).forEach((key) => {
+      if (key === 'logo' && company['logo']) {
+        formData.append(key, company[key]);
+      } else if (company[key]) {
+        formData.append(key, company[key]);
+      }
+    });
+    this.api.post(this.baseApiUrl + 'companies', formData, {
+      headers: header
     }).subscribe((success: any) => {
       this.toast.success('', success.status);
       const currentData = this.companies.getValue();
       currentData.push(success.company);
       this.companies.next(currentData);
-    }, error => this.errorHandler.getErrorStatus(error));
+    }, error => {
+       this.errorHandler.getErrorStatus(error);
+      });
   }
 
   editCompany(company: Company) {
-    this.api.post(this.baseApiUrl + 'companies/' + company.id, company, {
-      headers: this.header
+    const header = new HttpHeaders(
+      {
+        Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+      }
+      );
+
+    const formData = new FormData();
+
+    Object.keys(company).forEach((key) => {
+      if (key === 'logo' && company['logo']) {
+        formData.append(key, company[key]);
+      } else if (company[key]) {
+        formData.append(key, company[key]);
+      }
+    });
+    header.append('Content-Type', 'multipart/form-data');
+    this.api.post(this.baseApiUrl + 'companies/' + company.id, formData, {
+      headers: header
     }).subscribe((success: any) => {
       this.toast.success('', success.status);
       const currentData = this.companies.getValue();
@@ -68,6 +102,9 @@ export class CompaniesService {
       const currentData = this.companies.getValue();
       currentData.splice(currentData.findIndex(comp => comp.id === company.id), 1);
       this.companies.next(currentData);
-    }, error => this.errorHandler.getErrorStatus(error));
+    }, error => {
+      console.log(error);
+      this.errorHandler.getErrorStatus(error);
+    });
   }
 }

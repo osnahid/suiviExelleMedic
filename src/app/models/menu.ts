@@ -52,8 +52,8 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/settings/partners',
       },
       {
-        title: 'Les Materiels',
-        link: '/pages/settings/materiels',
+        title: 'Les Produits',
+        link: '/pages/settings/materials',
       },
       {
         title: 'Les Softwares',

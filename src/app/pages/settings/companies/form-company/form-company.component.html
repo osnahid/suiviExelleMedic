@@ -2,9 +2,10 @@
 <form #companyForm="ngForm" (ngSubmit)="onAdd(companyForm)">
     <div mat-dialog-content>
         <div>
+          <div class="label" style="margin-right: 8px;">Logo :</div>
           <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput accept=".PNG, .JPG, .JPEG">
           <div (click)="fileInput.click()" class="inputFile">
-            <nb-icon icon="plus-outline"></nb-icon>
+            <img [src]="(img_url === null)? 'assets/images/logo_placeholder.png' : img_url" alt="">
           </div>
         </div>
         <div class=" formRow">
