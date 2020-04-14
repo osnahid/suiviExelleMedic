@@ -2,5 +2,5 @@ export class Column {
   column: string;
   name: string;
   type: string;
-  sort?: string;
+  sort?: string | boolean;
 }

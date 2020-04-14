@@ -1,0 +1,51 @@
+<h3 mat-dialog-header>{{ (data.action === 'edit')? 'Modifier' : 'Ajouter' }} un produit</h3>
+<form #materialForm="ngForm" (ngSubmit)="onAdd(materialForm)">
+    <div mat-dialog-content>
+        <div>
+          <div class="label" style="margin-right: 8px;">image :</div>
+          <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput accept=".PNG, .JPG, .JPEG">
+          <div (click)="fileInput.click()" class="inputFile">
+            <img [src]="(img_url === null)? 'assets/images/logo_placeholder.png' : img_url" alt="">
+          </div>
+        </div>
+        <div class=" formRow">
+            <div class="label" style="margin-right: 8px;">Nom :</div>
+            <div>
+                <input nbInput type="text" required [(ngModel)]="newMaterial.name" fullWidth [status]="(nom.errors && (nom.dirty || materialForm.submitted)) ? 'danger':'basic'" #nom="ngModel" name="nom">
+            </div>
+            <div class="errorMessage" *ngIf="nom.errors && (nom.dirty || materialForm.submitted)">Le nom n'est pas indiqué</div>
+        </div>
+
+        <div class="formRow">
+          <div class="label" style="margin-right: 8px;">type :</div>
+          <div>
+            <nb-select name="type" #type="ngModel" [(ngModel)]="newMaterial.type" placeholder="-selectionner un champs-">
+              <nb-option value="intra-oral scanner">intra-oral scanner</nb-option>
+              <nb-option value="scanner a table">scanner a table</nb-option>
+              <nb-option value="sterilization">sterilization</nb-option>
+              <nb-option value="sedation">sedation</nb-option>
+            </nb-select>
+          </div>
+          <div class="errorMessage" *ngIf="type.errors && (type.dirty || materialForm.submitted)">Le type n'est pas indiqué</div>
+        </div>
+
+        <div class="formRow">
+          <div>
+            <nb-checkbox name="hasSoftware" [(ngModel)]="newMaterial.hasSoftware">a un software</nb-checkbox>
+          </div>
+        </div>
+
+        <div class="formRow">
+          <div class="label" style="margin-right: 8px;">caractéristiques :</div>
+          <div>
+            <textarea nbInput #car="ngModel" name="car" [(ngModel)]="newMaterial.characteristics" fullWidth placeholder=""></textarea>
+          </div>
+        </div>
+    </div>
+    <div mat-dialog-actions class="actionsContainer">
+      <button type="submit" mat-raised-button [disabled]="loading"  color="primary" [nbSpinner]="loading"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="tiny">{{ (data.action === 'edit')? 'Modifier' : 'Ajouter' }}</button>
+      <button [mat-dialog-close]="false" mat-raised-button>Annuler</button>
+    </div>
+    </form>

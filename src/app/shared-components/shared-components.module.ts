@@ -29,7 +29,8 @@ import { OsnProductShowcaseComponent } from './osn-product-showcase/osn-product-
     OsnTableComponent,
     OsnPaginationComponent,
     NoDataComponent,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    OsnProductShowcaseComponent
   ],
   entryComponents: [
     ConfirmationModalComponent,

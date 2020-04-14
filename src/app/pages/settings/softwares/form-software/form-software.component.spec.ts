@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OsnProductShowcaseComponent } from './osn-product-showcase.component';
+import { FormSoftwareComponent } from './form-software.component';
 
-describe('OsnProductShowcaseComponent', () => {
-  let component: OsnProductShowcaseComponent;
-  let fixture: ComponentFixture<OsnProductShowcaseComponent>;
+describe('FormSoftwareComponent', () => {
+  let component: FormSoftwareComponent;
+  let fixture: ComponentFixture<FormSoftwareComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OsnProductShowcaseComponent ]
+      declarations: [ FormSoftwareComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OsnProductShowcaseComponent);
+    fixture = TestBed.createComponent(FormSoftwareComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

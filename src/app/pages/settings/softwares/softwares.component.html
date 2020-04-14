@@ -1,1 +1,22 @@
-<p>softwares works!</p>
+<div class="flex header-in-details">
+  <h3>
+    Liste des softwares
+  </h3>
+  <div>
+    <button status="primary" size="small" style="float: right;margin-left: 8px;" (click)="openAddModal()" nbButton>
+      <nb-icon icon="plus-outline"></nb-icon> Ajouter
+    </button>
+    <button status="danger" size="small" style="float: right;margin-left: 8px;" (click)="refresh()" nbButton>
+      <nb-icon icon="refresh-outline"></nb-icon> Refresh
+    </button>
+    <button status="basic" size="small" style="float: right;margin-left: 8px;" [routerLink]="'/pages/settings/partners'" nbButton>
+      <nb-icon icon="arrow-back-outline"></nb-icon> Retour
+    </button>
+  </div>
+</div>
+<div [nbSpinner]="loading"
+nbSpinnerStatus="primary"
+nbSpinnerSize="large"
+nbSpinnerMessage="loading...">
+  <app-osn-product-showcase [columns]="columnsForSort" [data]="softwares" [config]="osnTableConfig" [areas]="areas" ></app-osn-product-showcase>
+</div>

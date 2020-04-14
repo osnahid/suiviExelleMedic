@@ -5,6 +5,7 @@ import { Material } from '../models/material';
 import { ErrorHandlerService } from './error-handler.service';
 import { NbToastrService } from '@nebular/theme';
 import { Router, ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -19,77 +20,125 @@ export class MaterialsService {
   ) { }
 
 
-  baseApiUrl = 'http://127.0.0.1:8001/api/';
+  baseApiUrl = 'http://127.0.0.1:8001/api';
   header = new HttpHeaders(
     { Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
   'Content-Type': 'application/json; charset=utf-8'});
 
+  loader = new BehaviorSubject<boolean>(true);
   allMaterials = new BehaviorSubject<Material[]>(null);
   materialsByCompany = new BehaviorSubject<Material[]>(null);
 
   getAllMaterials() {
+    this.loader.next(true);
     this.api.get(this.baseApiUrl + '/materials', { headers: this.header}).subscribe((success: Material[]) => {
-      console.log(success);
       this.allMaterials.next(success);
-    }, error => this.errorHandler.getErrorStatus(error));
+    },
+    error => this.errorHandler.getErrorStatus(error),
+    () => {
+      this.loader.next(false);
+    }
+    );
   }
 
   getMaterialsByCompany(company_id: number) {
-    this.api.get(this.baseApiUrl + 'companies/' + company_id + '/materials', { headers: this.header}).subscribe((success: Material[]) => {
-      console.log(success);
-      this.allMaterials.next(success);
-    }, error => this.errorHandler.getErrorStatus(error));
+    this.loader.next(true);
+    this.api.get(this.baseApiUrl + '/companies/' + company_id + '/materials', { headers: this.header}).pipe(map(object => {
+      const materials: Material[] = [];
+      Object.keys(object).forEach(key => materials.push(object[key]));
+      return materials;
+    })).subscribe((success: Material[]) => {
+      this.materialsByCompany.next(success);
+    },
+    error => this.errorHandler.getErrorStatus(error),
+    () => this.loader.next(false));
+  }
+
+  getFormDataFromObject(material: Material) {
+    const formData: FormData = new FormData();
+
+    Object.keys(material).forEach(key => {
+      if ((material['image'] && key === 'image') || (key !== 'image' && material[key])) {
+        formData.append(key, material[key]);
+      }
+    });
+
+    return formData;
   }
 
   saveMaterial(material: Material) {
+    this.loader.next(true);
 
     const headers = new HttpHeaders({Authorization: 'Bearer ' + localStorage.getItem('accessToken')});
     headers.append('Content-Type', 'multipart/form-data');
 
-    const formData: FormData = new FormData();
 
-    Object.keys(material).forEach(key => {
-      if ((material['image'] && key === 'image') || (key !== 'image' && material[key])) {
-        formData.append(key, material[key]);
-      }
-    });
-    this.api.post(this.baseApiUrl + 'companies/' + material.company_id + '/materials', formData, {headers}).subscribe((success: any) => {
+    this.api.post(
+    this.baseApiUrl + '/companies/' + material.company_id + '/materials',
+    this.getFormDataFromObject(material),
+    {headers}).subscribe((success: any) => {
       this.toast.success('', success.status);
-      // to figure out
-      this.route.params.subscribe(params => {
-        console.log(params);
-      });
-    }, error => this.errorHandler.getErrorStatus(error));
+      this.actionToList('add', success.material);
+    }, error => {
+      this.errorHandler.getErrorStatus(error);
+      this.loader.next(false);
+    },
+    () => this.loader.next(false));
   }
 
   editMaterial(material: Material) {
-
+    this.loader.next(true);
     const headers = new HttpHeaders({Authorization: 'Bearer ' + localStorage.getItem('accessToken')});
     headers.append('Content-Type', 'multipart/form-data');
 
-    const formData: FormData = new FormData();
-
-    Object.keys(material).forEach(key => {
-      if ((material['image'] && key === 'image') || (key !== 'image' && material[key])) {
-        formData.append(key, material[key]);
-      }
-    });
     this.api.post(
-    this.baseApiUrl + 'companies/' + material.company_id + '/materials/' + material.id,
-    formData,
+    this.baseApiUrl + '/companies/' + material.company_id + '/materials/' + material.id,
+    this.getFormDataFromObject(material),
     {headers}
     ).subscribe((success: any) => {
       this.toast.success('', success.status);
-      // to figure out
-      this.route.params.subscribe(params => {
-        console.log(params);
-      });
-    }, error => this.errorHandler.getErrorStatus(error));
+      this.actionToList('edit', success.material);
+    }, error => this.errorHandler.getErrorStatus(error),
+    () => this.loader.next(false));
   }
 
-  deleteMaterial(material_id: number) {
-    this.api.delete(this.baseApiUrl + '/materials/' + material_id, { headers: this.header}).subscribe((success: any) => {
+  deleteMaterial(material: Material) {
+    this.loader.next(true);
+    this.api.delete(this.baseApiUrl + '/materials/' + material.id, { headers: this.header}).subscribe((success: any) => {
       this.toast.danger('', success.status);
-    }, error => this.errorHandler.getErrorStatus(error));
+      this.actionToList('delete', material);
+    },
+    error => this.errorHandler.getErrorStatus(error),
+    () => this.loader.next(false));
+  }
+
+
+  actionToList(action: string, material: Material) {
+    if (this.allMaterials.getValue() !== null) {
+      const materials = this.allMaterials.getValue();
+      if (action === 'add') {
+       materials.push(material);
+      } else if (action === 'edit') {
+        const index = materials.findIndex(mat => mat.id === material.id);
+        materials[index] = material;
+      } else if (action === 'delete') {
+        const index = materials.findIndex(mat => mat.id === material.id);
+        materials.splice(index, 1);
+      }
+      this.allMaterials.next(materials);
+    }
+    if (this.materialsByCompany.getValue() !== null) {
+      const materials = this.materialsByCompany.getValue();
+      if (action === 'add') {
+       materials.push(material);
+      } else if (action === 'edit') {
+        const index = materials.findIndex(mat => mat.id === material.id);
+        materials[index] = material;
+      } else if (action === 'delete') {
+        const index = materials.findIndex(mat => mat.id === material.id);
+        materials.splice(index, 1);
+      }
+      this.materialsByCompany.next(materials);
+    }
   }
 }

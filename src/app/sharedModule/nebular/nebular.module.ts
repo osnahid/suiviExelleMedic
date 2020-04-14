@@ -24,7 +24,8 @@ import {
   NbTabsetModule,
   NbTooltipModule,
   NbListModule,
-  NbCalendarModule
+  NbCalendarModule,
+  NbCheckboxModule
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 
@@ -37,6 +38,7 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
       destroyByClick: true,
       hasIcon: true
     }),
+    NbCheckboxModule,
     NbIconModule,
     NbActionsModule,
     NbUserModule,
@@ -67,6 +69,7 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
     NbLayoutModule,
     NbEvaIconsModule,
     NbIconModule,
+    NbCheckboxModule,
     NbActionsModule,
     NbUserModule,
     NbMenuModule,

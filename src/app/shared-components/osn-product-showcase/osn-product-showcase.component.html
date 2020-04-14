@@ -3,19 +3,38 @@
   <div class="sortFilterArea">
     <div class="sort">
       <p class="label">Trier par :</p>
+      <div>
+        <nb-select name="type" (selectedChange)="sort($event)" placeholder="-selectionner un champs-">
+          <nb-option *ngFor="let column of columns" [value]="column">{{ column.name }}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div class="search">
+      <p class="label">Rechercher :</p>
+      <div>
+        <input nbInput type="search" (keyup)="applyFilter($event.target.value)" name="" id="" placeholder="">
+      </div>
     </div>
   </div>
+  <app-no-data *ngIf="dataShowed.length === 0" message="Aucune donnée disponible"></app-no-data>
   <div class="showcase">
-    <div class="product">
+    <div *ngFor="let item of dataShowed" class="product">
       <div class="img">
-        <img src="assets/images/logo_placeholder.png" alt="">
+        <img [src]="(item[areas.image.column]) ? baseApiUrl + item[areas.image.column] : 'assets/images/logo_placeholder.png'" alt="">
       </div>
       <div class="description">
-        <h3>name</h3>
-        <p>caracrestiques</p>
+        <h3>{{ item[areas.title.column] }}</h3>
+        <ng-container *ngFor="let info of areas.info">
+          <div *ngIf="item[info.column]" class="info">
+            <div class="label">{{ info.name }} :</div>
+            <div>{{ item[info.column] }}</div>
+          </div>
+        </ng-container>
       </div>
-      <div class="actions">
-
+      <div class="action">
+        <button *ngFor="let action of config.actions" nbButton outline size="medium"
+        [nbTooltipIcon]="action.toolTipIcon" [nbTooltipStatus]="action.toolTipStatus" (click)="actionEmitter({action: action.action, object: item})" [nbTooltip]="action.toolTipText"
+        style="padding: 0.375rem; margin: 2px;" [status]="action.status"><nb-icon [icon]="action.icon"></nb-icon></button>
       </div>
     </div>
   </div>

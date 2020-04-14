@@ -119,6 +119,10 @@ export class CompaniesComponent implements OnInit, OnDestroy {
       this.delete(event.object);
     } else if (event.action === 'edit') {
       this.openEditModal(event.object);
+    } else if (event.action === 'materials') {
+      this.route.navigateByUrl('pages/settings/partners/' + event.object.id + '/materials');
+    } else if (event.action === 'softwares') {
+      this.route.navigateByUrl('pages/settings/partners/' + event.object.id + '/softwares');
     }
   }
 

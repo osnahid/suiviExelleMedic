@@ -13,6 +13,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .formRow {
@@ -39,4 +40,9 @@ a.phone, a.phone:hover, a.phone:active, a.visited {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+
+
+.header-in-details {
+  margin: 8px;
 }

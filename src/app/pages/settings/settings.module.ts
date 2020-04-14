@@ -14,6 +14,8 @@ import { FormCompanyComponent } from './companies/form-company/form-company.comp
 import { MaterialAngularModule } from 'src/app/sharedModule/material-angular/material-angular.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
+import { FormMaterialComponent } from './materials/form-material/form-material.component';
+import { FormSoftwareComponent } from './softwares/form-software/form-software.component';
 
 const routes: Routes = [
   {
@@ -57,7 +59,9 @@ const routes: Routes = [
     CompaniesComponent,
     MaterialsComponent,
     SoftwaresComponent,
-    FormCompanyComponent
+    FormCompanyComponent,
+    FormMaterialComponent,
+    FormSoftwareComponent
   ],
   imports: [
     CommonModule,
@@ -72,7 +76,9 @@ const routes: Routes = [
     RouterModule
   ],
   entryComponents: [
-    FormCompanyComponent
+    FormCompanyComponent,
+    FormMaterialComponent,
+    FormSoftwareComponent
   ]
 })
 export class SettingsModule { }

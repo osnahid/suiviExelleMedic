@@ -15,7 +15,7 @@
           <span>
             {{ column.name }}
           </span>
-          <nb-icon *ngIf="column.sort" [icon]="(column.sort == 'descending')? 'arrow-down' : 'arrow-up'"></nb-icon>
+          <nb-icon *ngIf="column.sort" [icon]="(column.sort === 'descending')? 'arrow-down' : 'arrow-up'"></nb-icon>
           <nb-icon *ngIf="!column.sort" class="ops" icon="swap-outline"></nb-icon>
         </div>
       </th>

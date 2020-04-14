@@ -48,15 +48,24 @@ export class OsnTableComponent implements OnInit {
     if (column.sort) {
       if (column.sort === 'descending') {
         column.sort = 'ascending';
-        this.dataShowed = this._data.sort((a, b) => 0 - ((column.type === 'date') ? (new Date(b[column.column]).getTime() - new Date(a[column.column]).getTime()) : (a[column.column] > b[column.column] ? 1 : -1)));
+        this.dataShowed =
+        this._data.sort((a, b) => 0 - ((column.type === 'date')
+        ? (new Date(b[column.column]).getTime() - new Date(a[column.column]).getTime())
+        : (a[column.column] > b[column.column] ? 1 : -1)));
       } else {
         column.sort = 'descending';
-        this.dataShowed = this._data.sort((a, b) => 0 - ((column.type === 'date') ? (new Date(a[column.column]).getTime() - new Date(b[column.column]).getTime()) : (a[column.column] > b[column.column] ? -1 : 1)));
+        this.dataShowed =
+        this._data.sort((a, b) => 0 - ((column.type === 'date')
+        ? (new Date(a[column.column]).getTime() - new Date(b[column.column]).getTime())
+        : (a[column.column] > b[column.column] ? -1 : 1)));
       }
 
     } else {
       column.sort = 'descending';
-      this.dataShowed = this._data.sort((a, b) => 0 - ((column.type === 'date') ? (new Date(a[column.column]).getTime() - new Date(b[column.column]).getTime()) : (a[column.column] > b[column.column] ? -1 : 1)));
+      this.dataShowed =
+      this._data.sort((a, b) => 0 - ((column.type === 'date')
+      ? (new Date(a[column.column]).getTime() - new Date(b[column.column]).getTime())
+      : (a[column.column] > b[column.column] ? -1 : 1)));
     }
 
   }

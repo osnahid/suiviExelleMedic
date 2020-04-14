@@ -20,11 +20,12 @@ export class SoftwaresService {
   ) { }
 
 
-  baseApiUrl = 'http://127.0.0.1:8001/api/';
+  baseApiUrl = 'http://127.0.0.1:8001/api';
   header = new HttpHeaders(
     { Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
   'Content-Type': 'application/json; charset=utf-8'});
 
+  loader = new BehaviorSubject<boolean>(true);
   allsoftwares = new BehaviorSubject<Software[]>(null);
   softwaresByCompany = new BehaviorSubject<Software[]>(null);
 
@@ -32,14 +33,16 @@ export class SoftwaresService {
     this.api.get(this.baseApiUrl + '/softwares', { headers: this.header}).subscribe((success: Software[]) => {
       console.log(success);
       this.allsoftwares.next(success);
-    }, error => this.errorHandler.getErrorStatus(error));
+    }, error => this.errorHandler.getErrorStatus(error),
+    () => this.loader.next(false));
   }
 
   getsoftwaresByCompany(company_id: number) {
     this.api.get(this.baseApiUrl + 'companies/' + company_id + '/softwares', { headers: this.header}).subscribe((success: Software[]) => {
       console.log(success);
       this.allsoftwares.next(success);
-    }, error => this.errorHandler.getErrorStatus(error));
+    }, error => this.errorHandler.getErrorStatus(error),
+    () => this.loader.next(false));
   }
 
   savesoftware(software: Software) {
@@ -60,7 +63,8 @@ export class SoftwaresService {
       this.route.params.subscribe(params => {
         console.log(params);
       });
-    }, error => this.errorHandler.getErrorStatus(error));
+    }, error => this.errorHandler.getErrorStatus(error),
+    () => this.loader.next(false));
   }
 
   editsoftware(software: Software) {
@@ -85,12 +89,14 @@ export class SoftwaresService {
       this.route.params.subscribe(params => {
         console.log(params);
       });
-    }, error => this.errorHandler.getErrorStatus(error));
+    }, error => this.errorHandler.getErrorStatus(error),
+    () => this.loader.next(false));
   }
 
   deletesoftware(software_id: number) {
     this.api.delete(this.baseApiUrl + '/softwares/' + software_id, { headers: this.header}).subscribe((success: any) => {
       this.toast.danger('', success.status);
-    }, error => this.errorHandler.getErrorStatus(error));
+    }, error => this.errorHandler.getErrorStatus(error),
+    () => this.loader.next(false));
   }
 }
