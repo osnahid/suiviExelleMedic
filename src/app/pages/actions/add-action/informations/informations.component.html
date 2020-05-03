@@ -1,0 +1,62 @@
+<div class="mainForm">
+  <form id="info" #info="ngForm" (ngSubmit)="onAdd(info)">
+  <div class="formFram">
+    <div class="info">
+        <div class="formInput">
+            <div class="label">Client :</div>
+            <div>
+                <input nbInput fullWidth [ngModel]="action.client.name" [status]="(accountUid.errors && (accountUid.dirty || info.submitted))? 'danger':'basic'"
+                    #accountUid="ngModel"
+                    (keyup)="filterAutoCompleteClient($event.target.value)"
+                    [matAutocomplete]="auto"
+                    required
+                    name="accountUid">
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectClient($event)">
+                    <mat-option [id]="account.id"  *ngFor="let account of filterCustomers" [value]="account.name">
+                    <nb-user size="small"
+                    [name]="account.name"
+                    [title]="account.phone">
+                    </nb-user>
+                    </mat-option>
+                </mat-autocomplete>
+                <button nbButton type="button" (click)="OpenAddModalCustomer()" style="padding: 7px;margin-left: 8px;">
+                  <nb-icon style="margin: 0;" icon="plus-outline"></nb-icon>{{(mobile)? null : 'ajouter'}}
+                </button>
+            </div>
+        </div>
+        <div class="errorMessage" *ngIf="accountUid.errors && (accountUid.dirty || info.submitted)">Le client n'est pas indiqué</div>
+        <div class="formInput">
+          <div class="label">Date :</div>
+          <div>
+            <input [nbDatepicker]="datepicker" required nbInput fullWidth [(ngModel)]="action.created_at"
+            name="created_at" #created_at="ngModel">
+            <nb-datepicker #datepicker></nb-datepicker>
+          </div>
+        </div>
+        <div class="errorMessage" *ngIf="created_at.errors && (created_at.dirty || info.submitted)">La date n'est pas indiquée</div>
+        <div class="formInput">
+          <div class="label">ville :</div>
+          <div>
+            <input required nbInput fullWidth [(ngModel)]="action.city"
+            name="city" #city="ngModel">
+          </div>
+        </div>
+        <div class="errorMessage" *ngIf="city.errors && (city.dirty || info.submitted)">La ville n'est pas indiquée</div>
+        <div class="formInput">
+          <div class="label">Ingenieur ou Technicien :</div>
+          <div>
+            <nb-user size="medium"
+            [name]="account.name"
+            [title]="account.email">
+            </nb-user>
+          </div>
+        </div>
+      </div>
+    <div class="navigation">
+      <button type="submit" status="basic" size="small" style="margin-left: 8px;" nbButton>
+        suivant <nb-icon icon="arrow-forward-outline"></nb-icon>
+      </button>
+    </div>
+  </div>
+</form>
+</div>

@@ -20,7 +20,7 @@
   <div class="showcase">
     <div *ngFor="let item of dataShowed" class="product">
       <div class="img">
-        <img [src]="(item[areas.image.column]) ? baseApiUrl + item[areas.image.column] : 'assets/images/logo_placeholder.png'" alt="">
+        <img [src]="(item[areas.image.column]) ? item[areas.image.column] : 'assets/images/logo_placeholder.png'" alt="">
       </div>
       <div class="description">
         <h3>{{ item[areas.title.column] }}</h3>

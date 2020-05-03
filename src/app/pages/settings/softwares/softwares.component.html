@@ -18,5 +18,5 @@
 nbSpinnerStatus="primary"
 nbSpinnerSize="large"
 nbSpinnerMessage="loading...">
-  <app-osn-product-showcase [columns]="columnsForSort" [data]="softwares" [config]="osnTableConfig" [areas]="areas" ></app-osn-product-showcase>
+  <app-osn-product-showcase [columns]="columnsForSort" [data]="softwares" [config]="osnTableConfig" [areas]="areas" (action)="actionHandler($event)" ></app-osn-product-showcase>
 </div>

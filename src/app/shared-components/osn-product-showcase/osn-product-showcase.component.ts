@@ -30,7 +30,6 @@ export class OsnProductShowcaseComponent implements OnInit {
   @Input() columns: Column[];
   @Input() areas: Areas;
   @Input() config: OsnTableConfig = null;
-  baseApiUrl = 'http://127.0.0.1:8001';
 
 
   @Output() action = new EventEmitter<{action: string, object: any}>();

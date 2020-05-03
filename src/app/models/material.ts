@@ -1,6 +1,6 @@
 export class Material {
   name: string;
-  image: File | string;
+  image: string | File;
   type: string;
   hasSoftware: boolean = false;
   characteristics: string;

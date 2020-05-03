@@ -1,39 +1,62 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MaterialsService } from 'src/app/services/materials.service';
 import { Material } from 'src/app/models/material';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NbToastrService } from '@nebular/theme';
+import { Company } from 'src/app/models/company';
+import { CompaniesService } from 'src/app/services/companies.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-form-material',
   templateUrl: './form-material.component.html',
   styleUrls: ['./form-material.component.scss']
 })
-export class FormMaterialComponent implements OnInit {
+export class FormMaterialComponent implements OnInit, OnDestroy {
 
 
   loading = false;
   newMaterial = new Material();
   img_url = null;
+  comapnies: Company[] = [];
+
+  sub: Subscription;
 
   constructor(
     private toast: NbToastrService,
     public dialogRef: MatDialogRef<FormMaterialComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private materialService: MaterialsService
+    private materialService: MaterialsService,
+    private companyService: CompaniesService
   ) { }
 
   ngOnInit(): void {
     if (this.data.action === 'edit') {
       Object.keys(this.data.material).forEach(key => {
         if (key === 'image') {
-          this.img_url = 'http://127.0.0.1:8001' + this.data.material[key];
+          this.img_url = this.data.material[key];
         } else {
           this.newMaterial[key] = this.data.material[key];
         }
       });
     }
-    this.newMaterial.company_id = this.data.company_id;
+    if (this.data.company_id) {
+      this.newMaterial.company_id = this.data.company_id;
+    } else {
+      this.sub = this.companyService.companies.asObservable().subscribe(comp => {
+        if (comp === null) {
+          this.companyService.getCompanies();
+        } else {
+          this.comapnies = comp;
+        }
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
   onFileChanged(event) {
     const reader = new FileReader();

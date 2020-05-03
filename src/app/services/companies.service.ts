@@ -5,6 +5,7 @@ import { ErrorHandlerService } from './error-handler.service';
 import { NbToastrService } from '@nebular/theme';
 import { Router } from '@angular/router';
 import { Company } from '../models/company';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,8 @@ export class CompaniesService {
   ) { }
 
 
-  baseApiUrl = 'http://127.0.0.1:8001/api/';
+  baseApiUrl = environment.apiRoute;
+
   header = new HttpHeaders(
     { Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
   'Content-Type': 'application/json; charset=utf-8'});

@@ -9,6 +9,7 @@ import { OsnTableConfig } from 'src/app/shared-components/osn-table/config';
 import { Subscription } from 'rxjs';
 import { FormClientComponent } from './form-client/form-client.component';
 import { Router } from '@angular/router';
+import { ResponsiveService } from 'src/app/services/responsive.service';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class ClientsComponent implements OnInit, OnDestroy {
   constructor(
     private clientService: ClientsService,
     private dialog: MatDialog,
-    private route: Router
+    private route: Router,
+    private responsive: ResponsiveService
   ) { }
 
   clients: Customer[] = [];
@@ -99,7 +101,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
           confim: false,
           message: 'Êtes-vous sûr de vouloir supprimer ce client ?'
         },
-        width: '40vw'
+        width: this.responsive.getModelWidth()
       });
       dialogRef.afterClosed().subscribe(data => {
         if (data === true) {

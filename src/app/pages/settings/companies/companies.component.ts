@@ -8,6 +8,8 @@ import { Column } from 'src/app/shared-components/osn-table/column';
 import { OsnTableConfig } from 'src/app/shared-components/osn-table/config';
 import { FormCompanyComponent } from './form-company/form-company.component';
 import { ConfirmationModalComponent } from 'src/app/shared-components/confirmation-modal/confirmation-modal.component';
+import { MaterialsService } from 'src/app/services/materials.service';
+import { ResponsiveService } from 'src/app/services/responsive.service';
 
 @Component({
   selector: 'app-companies',
@@ -21,7 +23,9 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   constructor(
     private companiesApi: CompaniesService,
     private dialog: MatDialog,
-    private route: Router
+    private route: Router,
+    private materialApi: MaterialsService,
+    private responsive: ResponsiveService
   ) { }
 
   companies: Company[] = [];
@@ -94,7 +98,8 @@ export class CompaniesComponent implements OnInit, OnDestroy {
       data: {
         action: 'add'
       },
-      width: '50vw'
+      width: this.responsive.getModelWidth(),
+      maxWidth: this.responsive.getModelWidth()
     });
   }
 
@@ -104,7 +109,9 @@ export class CompaniesComponent implements OnInit, OnDestroy {
         action: 'edit',
         company
       },
-      width: '40vw'
+      width: this.responsive.getModelWidth(),
+      maxWidth: this.responsive.getModelWidth()
+
     });
   }
 
@@ -120,6 +127,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
     } else if (event.action === 'edit') {
       this.openEditModal(event.object);
     } else if (event.action === 'materials') {
+      this.materialApi.companyName.next(event.object.name);
       this.route.navigateByUrl('pages/settings/partners/' + event.object.id + '/materials');
     } else if (event.action === 'softwares') {
       this.route.navigateByUrl('pages/settings/partners/' + event.object.id + '/softwares');
@@ -132,7 +140,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
         confim: false,
         message: 'Êtes-vous sûr de vouloir supprimer ce partenaire ?'
       },
-      width: '40vw'
+      width: this.responsive.getModelWidth()
     });
     confirm.afterClosed().subscribe(e => {
       if (e === true) {

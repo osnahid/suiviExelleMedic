@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MaterialsService } from 'src/app/services/materials.service';
 import { ResponsiveService } from 'src/app/services/responsive.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Material } from '../../../models/material';
 import { Subscription } from 'rxjs';
 import { OsnTableConfig } from 'src/app/shared-components/osn-table/config';
@@ -64,6 +64,11 @@ export class MaterialsComponent implements OnInit, OnDestroy {
         type: 'string'
       },
       {
+        column: 'sn',
+        name: 'S/N',
+        type: 'string'
+      },
+      {
         column: 'type',
         name: 'type',
         type: 'string'
@@ -92,11 +97,10 @@ export class MaterialsComponent implements OnInit, OnDestroy {
       type: 'string'
     }
   ];
-
+  companyName = null;
   modalConfig = new MatDialogConfig();
   constructor(
     private materialService: MaterialsService,
-    private router: Router,
     private activeRoute: ActivatedRoute,
     private dialog: MatDialog,
     private responsive: ResponsiveService
@@ -112,6 +116,7 @@ export class MaterialsComponent implements OnInit, OnDestroy {
           if (success === null) {
             this.materialService.getMaterialsByCompany(params.company_id);
             this.modalConfig.data['company_id'] = params.company_id;
+            this.companyName = this.materialService.companyName.getValue();
           } else {
             this.materials = success;
           }

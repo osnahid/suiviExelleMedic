@@ -40,6 +40,10 @@ const routes: Routes = [
         loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule)
       },
       {
+        path: 'actions',
+        loadChildren: () => import('./actions/actions.module').then(m => m.ActionsModule)
+      },
+      {
         path: 'clients',
         component: ClientsComponent
       },

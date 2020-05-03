@@ -1,0 +1,18 @@
+<nb-card [size]="(mobile) ? 'large' : 'medium'">
+    <nb-card-body>
+      <nb-stepper #stepper disableStepNavigation="true" linear="true" [orientation]="(mobile)? 'horizontal' : 'vertical' ">
+        <nb-step label="Information">
+          <app-informations [type]="type" [stepper]="stepper"></app-informations>
+        </nb-step>
+        <nb-step label="Matériel / Logiciel">
+          <app-mat-soft></app-mat-soft>
+        </nb-step>
+        <nb-step *ngIf="type === 'installation'" label="subscription">
+          <app-subscription></app-subscription>
+        </nb-step>
+        <nb-step *ngIf="type === 'intervention'" label="taches/note">
+          <app-tasks></app-tasks>
+        </nb-step>
+      </nb-stepper>
+    </nb-card-body>
+</nb-card>

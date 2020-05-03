@@ -16,21 +16,27 @@
             <div class="errorMessage" *ngIf="nom.errors && (nom.dirty || materialForm.submitted)">Le nom n'est pas indiqué</div>
         </div>
 
+
+
         <div class="formRow">
           <div class="label" style="margin-right: 8px;">type :</div>
           <div>
-            <nb-select name="type" #type="ngModel" [(ngModel)]="newMaterial.type" placeholder="-selectionner un champs-">
-              <nb-option value="intra-oral scanner">intra-oral scanner</nb-option>
-              <nb-option value="scanner a table">scanner a table</nb-option>
-              <nb-option value="sterilization">sterilization</nb-option>
-              <nb-option value="sedation">sedation</nb-option>
-            </nb-select>
+            <input nbInput type="text" required [(ngModel)]="newMaterial.type" fullWidth [status]="(type.errors && (type.dirty || materialForm.submitted)) ? 'danger':'basic'" #type="ngModel" name="type">
           </div>
           <div class="errorMessage" *ngIf="type.errors && (type.dirty || materialForm.submitted)">Le type n'est pas indiqué</div>
         </div>
 
-        <div class="formRow">
+        <div class="formRow" *ngIf="!data.company_id">
+          <div class="label" style="margin-right: 8px;">manufacture :</div>
           <div>
+            <nb-select fullWidth name="comp" #comp="ngModel" [(ngModel)]="newMaterial.company_id" placeholder="-selectionner un champs-">
+              <nb-option *ngFor="let comp of comapnies" [value]="comp.id">{{ comp.name }}</nb-option>
+            </nb-select>          </div>
+          <div class="errorMessage" *ngIf="type.errors && (type.dirty || materialForm.submitted)">Le type n'est pas indiqué</div>
+        </div>
+
+        <div class="formRow">
+          <div style="margin: 8px;">
             <nb-checkbox name="hasSoftware" [(ngModel)]="newMaterial.hasSoftware">a un software</nb-checkbox>
           </div>
         </div>

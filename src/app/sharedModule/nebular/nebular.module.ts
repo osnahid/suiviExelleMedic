@@ -25,7 +25,8 @@ import {
   NbTooltipModule,
   NbListModule,
   NbCalendarModule,
-  NbCheckboxModule
+  NbCheckboxModule,
+  NbStepperModule,
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 
@@ -61,7 +62,8 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
     NbCalendarModule,
     NbThemeModule.forRoot({ name: 'dark' }),
     NbLayoutModule,
-    NbEvaIconsModule
+    NbEvaIconsModule,
+    NbStepperModule
   ],
   exports: [
     NbToastrModule,
@@ -88,7 +90,8 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
     NbTabsetModule,
     NbTooltipModule,
     NbListModule,
-    NbCalendarModule
+    NbCalendarModule,
+    NbStepperModule
   ],
   providers: [
     NbSidebarService,

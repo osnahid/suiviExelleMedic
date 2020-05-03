@@ -1,0 +1,75 @@
+<div class="mainForm">
+  <form id="matSof" #matSof="ngForm" (ngSubmit)="onAdd(matSof)">
+    <div class="formFram">
+      <div class="matSof">
+        <div class="formInput">
+          <div class="label">Materiel :</div>
+          <div>
+              <input nbInput fullWidth [ngModel]="action.material.material.name" [status]="(materielUuid.errors && (materielUuid.dirty || matSof.submitted))? 'danger':'basic'"
+                  #materielUuid="ngModel"
+                  (keyup)="filterAutoCompleteMaterial($event.target.value)"
+                  [matAutocomplete]="autoMat"
+                  required
+                  name="materielUuid">
+              <mat-autocomplete #autoMat="matAutocomplete" (optionSelected)="selectMateriel($event)">
+                  <mat-option [id]="materiel.id"  *ngFor="let materiel of filterMateriels" [value]="materiel.name">
+                    <nb-user size="medium"
+                    picture=""
+                    [name]="materiel.name"
+                    [title]="materiel.characteristics"
+                    shape="semi-round">
+                    </nb-user>
+                  </mat-option>
+              </mat-autocomplete>
+              <button nbButton type="button" (click)="OpenAddModalMateriel()" style="padding: 7px;margin-left: 8px;">
+                <nb-icon style="margin: 0;" icon="plus-outline"></nb-icon>{{(mobile)? null : 'ajouter'}}
+              </button>
+          </div>
+      </div>
+      <div class="errorMessage" *ngIf="materielUuid.errors && (materielUuid.dirty || matSof.submitted)">Le materiel n'est pas indiqué</div>
+      <div class="formInput">
+        <div class="label">Numero de serie :</div>
+        <div>
+          <input nbInput fullWidth [(ngModel)]="action.material.sn"
+          name="sn" #sn="ngModel">
+        </div>
+      </div>
+      <div class="formInput">
+        <div class="label">logiciel :</div>
+        <div>
+            <input nbInput fullWidth [ngModel]="action.software.name" [status]="(softwareUuid.errors && (softwareUuid.dirty || matSof.submitted))? 'danger':'basic'"
+                #softwareUuid="ngModel"
+                (keyup)="filterAutoCompleteSoftware($event.target.value)"
+                [matAutocomplete]="autoSoft"
+                [required]="action.material.material.hasSoftware"
+                [disabled]="!action.material.material.hasSoftware"
+                name="softwareUuid">
+            <mat-autocomplete #autoSoft="matAutocomplete" (optionSelected)="selectSoftware($event)">
+                <mat-option [id]="software.id"  *ngFor="let software of filterSoftwares" [value]="software.name">
+                  <nb-user size="medium"
+                  picture="{{software.image}}"
+                  [name]="software.name"
+                  [title]="software.version"
+                  shape="semi-round">
+                  </nb-user>
+                </mat-option>
+            </mat-autocomplete>
+            <button nbButton type="button" (click)="OpenAddModalSoftware()" style="padding: 7px;margin-left: 8px;">
+              <nb-icon style="margin: 0;" icon="plus-outline"></nb-icon>{{(mobile)? null : 'ajouter'}}
+            </button>
+        </div>
+    </div>
+    <div class="errorMessage" *ngIf="softwareUuid.errors && (softwareUuid.dirty || matSof.submitted)">Le logiciel n'est pas indiqué</div>
+
+      </div>
+      <div class="navigation">
+        <button nbStepperPrevious type="button" status="basic" size="small" style="margin-left: 8px;" nbButton>
+          <nb-icon icon="arrow-back-outline"></nb-icon> precedent
+        </button>
+        <button type="submit" status="basic" size="small" style="margin-left: 8px;" nbButton>
+          suivant <nb-icon icon="arrow-forward-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

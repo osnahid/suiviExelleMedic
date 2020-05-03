@@ -16,3 +16,17 @@ nbSpinnerSize="large">
   </nb-sidebar>
 
 </nb-layout>
+
+
+<button class="addButton" color="primary" (click)="fabTriggred=!fabTriggred" mat-fab aria-label="">
+  <nb-icon [options]="{ animation: { type: 'zoom' } }" icon="plus-outline"></nb-icon>
+</button>
+<div class="fabMenu" *ngIf="fabTriggred" (click)="fabTriggred=!fabTriggred">
+  <a [routerLink]="['/pages/actions/adding', 'installation']" [@fabMenu]="'in'">
+    Ajouter une installation
+  </a>
+  <a [routerLink]="['/pages/actions/adding', 'intervention']" [@fabMenu]="'in'">
+    Ajouter une intervention
+  </a>
+
+</div>

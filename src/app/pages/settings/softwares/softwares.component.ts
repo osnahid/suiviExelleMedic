@@ -6,6 +6,10 @@ import { Areas } from 'src/app/shared-components/osn-product-showcase/column-sho
 import { Column } from 'src/app/shared-components/osn-table/column';
 import { SoftwaresService } from 'src/app/services/softwares.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ConfirmationModalComponent } from 'src/app/shared-components/confirmation-modal/confirmation-modal.component';
+import { FormSoftwareComponent } from './form-software/form-software.component';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { ResponsiveService } from 'src/app/services/responsive.service';
 
 @Component({
   selector: 'app-softwares',
@@ -24,12 +28,20 @@ export class SoftwaresComponent implements OnInit, OnDestroy {
     sortable: true,
     actions: [
       {
+        action: 'copy',
+        icon: 'copy-outline',
+        status: 'warning',
+        toolTipIcon: 'copy',
+        toolTipStatus: 'warning',
+        toolTipText: 'duplicate ce software'
+      },
+      {
         action: 'edit',
         icon: 'edit-2-outline',
         status: 'info',
         toolTipIcon: 'edit-2',
         toolTipStatus: 'info',
-        toolTipText: 'modifier ce client'
+        toolTipText: 'modifier ce software'
       },
       {
         action: 'delete',
@@ -37,7 +49,7 @@ export class SoftwaresComponent implements OnInit, OnDestroy {
         status: 'danger',
         toolTipIcon: 'trash-2',
         toolTipStatus: 'danger',
-        toolTipText: 'supprimer ce client'
+        toolTipText: 'supprimer ce software'
       }
     ]
   };
@@ -60,15 +72,10 @@ export class SoftwaresComponent implements OnInit, OnDestroy {
         type: 'string'
       },
       {
-        column: 'type',
-        name: 'type',
+        column: 'version',
+        name: 'version',
         type: 'string'
-      },
-      {
-        column: 'characteristics',
-        name: 'caractéristiques',
-        type: 'string'
-      },
+      }
     ]
   };
   columnsForSort: Column[] = [
@@ -88,31 +95,38 @@ export class SoftwaresComponent implements OnInit, OnDestroy {
       type: 'string'
     }
   ];
-
+  companyName = null;
+  modalConfig = new MatDialogConfig();
   constructor(
     private softwareService: SoftwaresService,
-    private router: Router,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private dialog: MatDialog,
+    private responsive: ResponsiveService
   ) { }
 
   ngOnInit(): void {
     this.loading = true;
+    this.modalConfig.data = new Object();
     let subForMat;
     const subActR = this.activeRoute.params.subscribe(params => {
       if (params.company_id) {
         subForMat = this.softwareService.softwaresByCompany.subscribe((success: Software[]) => {
           if (success === null) {
-            this.softwareService.getsoftwaresByCompany(params.company_id);
+            this.softwareService.getSoftwaresByCompany(params.company_id);
+            this.modalConfig.data['company_id'] = params.company_id;
+            this.companyName = this.softwareService.companyName.getValue();
           } else {
             this.softwares = success;
           }
         });
       } else {
-        subForMat = this.softwareService.allsoftwares.subscribe((success: Software[]) => {
+        subForMat = this.softwareService.allSoftwares.subscribe((success: Software[]) => {
           if (success === null) {
-            this.softwareService.getAllsoftwares();
+            this.softwareService.getAllSoftwares();
           } else {
             this.softwares = success;
+            console.log(success);
+            
           }
         });
       }
@@ -124,19 +138,77 @@ export class SoftwaresComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscirptions.forEach(sub => sub.unsubscribe());
+    this.softwareService.softwaresByCompany.next(null);
+  }
+
+  actionHandler(event) {
+    if (event.action === 'edit') {
+      this.openEditModal(event.object);
+    } else if (event.action === 'delete') {
+      this.delete(event.object);
+    } else if (event.action === 'copy') {
+      this.openCopyModal(event.object);
+    }
   }
 
   openAddModal() {
-
+    this.modalConfig.data['action'] = 'add';
+    this.modalConfig.width = this.responsive.getModelWidth();
+    this.modalConfig.maxWidth = this.responsive.getModelWidth();
+    if (this.responsive.getModelWidth() === '100vw') {
+      this.modalConfig.height = '100vh';
+    } else {
+      this.modalConfig.height = null;
+    }
+    this.dialog.open(FormSoftwareComponent, this.modalConfig);
   }
+
+  openEditModal(software: Software) {
+    this.modalConfig.data['action'] = 'edit';
+    this.modalConfig.data['software'] = software;
+    this.modalConfig.width = this.responsive.getModelWidth();
+    this.modalConfig.maxWidth = this.responsive.getModelWidth();
+    if (this.responsive.getModelWidth() === '100vw') {
+      this.modalConfig.height = '100vh';
+    } else {
+      this.modalConfig.height = null;
+    }
+    this.dialog.open(FormSoftwareComponent, this.modalConfig);
+  }
+
+  openCopyModal(software: Software) {
+    this.modalConfig.data['action'] = 'copy';
+    this.modalConfig.data['software'] = software;
+    this.modalConfig.width = this.responsive.getModelWidth();
+    this.modalConfig.maxWidth = this.responsive.getModelWidth();
+    if (this.responsive.getModelWidth() === '100vw') {
+      this.modalConfig.height = '100vh';
+    } else {
+      this.modalConfig.height = null;
+    }
+    this.dialog.open(FormSoftwareComponent, this.modalConfig);
+  }
+
   refresh() {
     this.softwareService.loader.next(true);
-    this.softwareService.allsoftwares.next(null);
+    this.softwareService.allSoftwares.next(null);
     this.softwareService.softwaresByCompany.next(null);
   }
 
   delete(software: Software) {
-    this.softwareService.deletesoftware(software.id);
+    if (software.id) {
+      const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+        data: {
+          confim: false,
+          message: 'Êtes-vous sûr de vouloir supprimer ce software ?'
+        },
+        width: '40vw'
+      });
+      dialogRef.afterClosed().subscribe(data => {
+        if (data === true) {
+          this.softwareService.deleteSoftware(software);
+        }
+      });
+    }
   }
-
 }

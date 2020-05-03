@@ -18,15 +18,15 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children: [
       {
         title: 'Les installations',
-        link: '/pages/installations',
+        link: '/pages/actions/installations',
       },
       {
         title: 'Les maintenances',
-        link: '/pages/maitenances',
+        link: '/pages/actions/maintenances',
       },
       {
         title: 'Les interventions',
-        link: '/pages/interventions',
+        link: '/pages/actions/interventions',
       },
     ],
   },

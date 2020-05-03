@@ -4,8 +4,8 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Material } from '../models/material';
 import { ErrorHandlerService } from './error-handler.service';
 import { NbToastrService } from '@nebular/theme';
-import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +14,12 @@ export class MaterialsService {
   constructor(
     private api: HttpClient,
     private errorHandler: ErrorHandlerService,
-    private toast: NbToastrService,
-    private router: Router,
-    private route: ActivatedRoute
+    private toast: NbToastrService
   ) { }
 
 
-  baseApiUrl = 'http://127.0.0.1:8001/api';
+  baseApiUrl = environment.apiRoute;
+
   header = new HttpHeaders(
     { Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
   'Content-Type': 'application/json; charset=utf-8'});
@@ -28,10 +27,22 @@ export class MaterialsService {
   loader = new BehaviorSubject<boolean>(true);
   allMaterials = new BehaviorSubject<Material[]>(null);
   materialsByCompany = new BehaviorSubject<Material[]>(null);
+  companyName = new BehaviorSubject<string>(null);
 
   getAllMaterials() {
     this.loader.next(true);
-    this.api.get(this.baseApiUrl + '/materials', { headers: this.header}).subscribe((success: Material[]) => {
+    this.api.get(this.baseApiUrl + 'materials', { headers: this.header}).pipe(map((object: any[]) => {
+      console.log(object);
+
+      object.forEach(element => {
+        if (element.hasSoftware === 1) {
+          element.hasSoftware = true;
+        } else {
+          element.hasSoftware = false;
+        }
+      });
+      return object;
+    })).subscribe((success: Material[]) => {
       this.allMaterials.next(success);
     },
     error => this.errorHandler.getErrorStatus(error),
@@ -43,7 +54,7 @@ export class MaterialsService {
 
   getMaterialsByCompany(company_id: number) {
     this.loader.next(true);
-    this.api.get(this.baseApiUrl + '/companies/' + company_id + '/materials', { headers: this.header}).pipe(map(object => {
+    this.api.get(this.baseApiUrl + 'companies/' + company_id + 'materials', { headers: this.header}).pipe(map(object => {
       const materials: Material[] = [];
       Object.keys(object).forEach(key => materials.push(object[key]));
       return materials;
@@ -74,7 +85,7 @@ export class MaterialsService {
 
 
     this.api.post(
-    this.baseApiUrl + '/companies/' + material.company_id + '/materials',
+    this.baseApiUrl + '/companies/' + material.company_id + 'materials',
     this.getFormDataFromObject(material),
     {headers}).subscribe((success: any) => {
       this.toast.success('', success.status);
@@ -92,7 +103,7 @@ export class MaterialsService {
     headers.append('Content-Type', 'multipart/form-data');
 
     this.api.post(
-    this.baseApiUrl + '/companies/' + material.company_id + '/materials/' + material.id,
+    this.baseApiUrl + 'materials/' + material.id,
     this.getFormDataFromObject(material),
     {headers}
     ).subscribe((success: any) => {
@@ -104,7 +115,7 @@ export class MaterialsService {
 
   deleteMaterial(material: Material) {
     this.loader.next(true);
-    this.api.delete(this.baseApiUrl + '/materials/' + material.id, { headers: this.header}).subscribe((success: any) => {
+    this.api.delete(this.baseApiUrl + 'materials/' + material.id, { headers: this.header}).subscribe((success: any) => {
       this.toast.danger('', success.status);
       this.actionToList('delete', material);
     },
@@ -114,31 +125,24 @@ export class MaterialsService {
 
 
   actionToList(action: string, material: Material) {
+    const fun = (materials: Material[]) => {
+      if (action === 'add') {
+        materials.push(material);
+       } else if (action === 'edit') {
+         const index = materials.findIndex(mat => mat.id === material.id);
+       } else if (action === 'delete') {
+         const index = materials.findIndex(mat => mat.id === material.id);
+         materials.splice(index, 1);
+       }
+      return materials;
+    };
     if (this.allMaterials.getValue() !== null) {
       const materials = this.allMaterials.getValue();
-      if (action === 'add') {
-       materials.push(material);
-      } else if (action === 'edit') {
-        const index = materials.findIndex(mat => mat.id === material.id);
-        materials[index] = material;
-      } else if (action === 'delete') {
-        const index = materials.findIndex(mat => mat.id === material.id);
-        materials.splice(index, 1);
-      }
-      this.allMaterials.next(materials);
+      this.allMaterials.next(fun(materials));
     }
     if (this.materialsByCompany.getValue() !== null) {
       const materials = this.materialsByCompany.getValue();
-      if (action === 'add') {
-       materials.push(material);
-      } else if (action === 'edit') {
-        const index = materials.findIndex(mat => mat.id === material.id);
-        materials[index] = material;
-      } else if (action === 'delete') {
-        const index = materials.findIndex(mat => mat.id === material.id);
-        materials.splice(index, 1);
-      }
-      this.materialsByCompany.next(materials);
+      this.materialsByCompany.next(fun(materials));
     }
   }
 }

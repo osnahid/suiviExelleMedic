@@ -5,6 +5,8 @@ import { NbToastrService } from '@nebular/theme';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Account } from '../models/account';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,8 @@ export class AccountsService {
   ) { }
 
 
-  baseApiUrl = 'http://127.0.0.1:8001/api/';
+  baseApiUrl = environment.apiRoute;
+
   header = new HttpHeaders(
     { Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
   'Content-Type': 'application/json; charset=utf-8'});

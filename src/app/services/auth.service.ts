@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { User } from '../models/user';
 import { NbToastrService } from '@nebular/theme';
 import { ErrorHandlerService } from './error-handler.service';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,8 @@ export class AuthService {
     { Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
   'Content-Type': 'application/json; charset=utf-8'});
 
-  baseApiUrl = 'http://127.0.0.1:8001/api/';
+  baseApiUrl = environment.apiRoute;
+
 
   constructor(
     private api: HttpClient,
@@ -36,10 +39,19 @@ export class AuthService {
 
   setUser(user) {
     this.user.next(user);
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  setUserFromLocalStorage() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user === null) {
+      this.logOut();
+    } else {
+      this.user.next(user);
+    }
   }
 
   isAuthenticated(): boolean {
-
     if (localStorage.getItem('accessToken') === null) {
       this.router.navigateByUrl('auth');
     } else {

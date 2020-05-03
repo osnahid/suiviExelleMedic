@@ -1,6 +1,6 @@
 <div class="flex header-in-details">
   <h3>
-    Liste des produits
+    Liste des produits {{ (companyName !== null) ? 'de '+ companyName : '' }}
   </h3>
   <div>
     <button status="primary" size="small" style="float: right;margin-left: 8px;" (click)="openAddModal()" nbButton>

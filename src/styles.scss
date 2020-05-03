@@ -46,3 +46,18 @@ a.phone, a.phone:hover, a.phone:active, a.visited {
 .header-in-details {
   margin: 8px;
 }
+
+.inputFile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img{
+    max-width: 100%;
+  }
+}
+
+
+.nb-theme-dark nb-stepper .step-content {
+  width: 100%;
+  height: 100%;
+}

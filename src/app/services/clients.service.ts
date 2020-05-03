@@ -5,7 +5,7 @@ import { Customer, Employee } from '../models/customer';
 import { ErrorHandlerService } from './error-handler.service';
 import { NbToastrService } from '@nebular/theme';
 import { Router } from '@angular/router';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +19,7 @@ export class ClientsService {
   ) { }
 
 
-  baseApiUrl = 'http://127.0.0.1:8001/api/';
+  baseApiUrl = environment.apiRoute;
   header = new HttpHeaders(
     { Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
   'Content-Type': 'application/json; charset=utf-8'});
@@ -66,11 +66,8 @@ export class ClientsService {
       data.push(success.customer);
       this.clients.next(data);
       this.selectedClient.next(success.customer);
-      this.route.navigate(['/pages/clients/', success.customer.id]);
-    }, error => {
-      console.log(error);
-      this.errorHandler.getErrorStatus(error);
-    });
+      // this.route.navigate(['/pages/clients/', success.customer.id]);
+    }, error => this.errorHandler.getErrorStatus(error));
   }
 
   editClient(customer: Customer) {
